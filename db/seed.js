@@ -1,4 +1,12 @@
 const { client } = "require";
+
+const {
+  createUser,
+  getUsers,
+  getUserByID,
+  getUserByUsername,
+} = require("../db/adapters/users");
+
 //DROPPING TABLES
 const dropTables = async () => {
   console.log("WE ARE DROPPING TABLES");
