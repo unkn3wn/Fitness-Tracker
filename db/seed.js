@@ -63,6 +63,13 @@ const createTables = async () => {
 `);
 };
 
+const seedDB = async () => {
+  console.log("..seeding users");
+  for (const user of users) {
+    await createUser(user);
+  }
+};
+
 async function testFitnessDB() {
   try {
     client.connect();
