@@ -1,5 +1,5 @@
-const { client } = "require";
-
+const { client } = require("./client");
+const { testUsers } = require("./seedData");
 const {
   createUser,
   getUsers,
@@ -11,18 +11,19 @@ const {
 const dropTables = async () => {
   console.log("WE ARE DROPPING TABLES");
   await client.query(`
-  DROP TABLES IF EXISTS users;
-  DROP TABLES IF EXISTS Routines;
-  DROP TABLES IF EXISTS Activities;
-  DROP TABLES IF EXISTS RoutineActivities;
+  DROP TABLE IF EXISTS routine_activities;
+  DROP TABLE IF EXISTS routines;
+  DROP TABLE IF EXISTS users;
+  DROP TABLE IF EXISTS activities;
   `);
 };
 
 //Create tables
 const createTables = async () => {
-  console.log("creating tables");
-  //USERS TABLE
-  await client.query(`
+  try {
+    console.log("creating tables");
+    //USERS TABLE
+    await client.query(`
     CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username varchar(255) UNIQUE NOT NULL,
@@ -30,9 +31,9 @@ const createTables = async () => {
   );
   `);
 
-  //ROUTINES TABLE
-  await client.query(`
-  CREATE TABLE Routines(
+    //ROUTINES TABLE
+    await client.query(`
+  CREATE TABLE routines(
     id SERIAL PRIMARY KEY,
     creator_id INTEGER REFERENCES users(id),
     is_public BOOLEAN DEFAULT false,
@@ -41,45 +42,54 @@ const createTables = async () => {
   );
   `);
 
-  //ACTIVITIES TABLE
-  await client.query(`
-  CREATE TABLE Activities(
+    //ACTIVITIES TABLE
+    await client.query(`
+  CREATE TABLE activities(
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(255) UNIQUE NOT NULL,
 	description TEXT NOT NULL
 );
 
 `);
-  //Routine activities
-  await client.query(`
-  CREATE TABLE RoutineActivities(
+    //Routine activities
+    await client.query(`
+  CREATE TABLE routine_activities(
 	id SERIAL PRIMARY KEY,
-	routine_id INTEGER REFERENCES routines(id) UNIQUE,
-	activity_id INTEGER REFERENCES activities(id) UNIQUE,
+	routine_id INTEGER REFERENCES routines(id),
+	activities_id INTEGER REFERENCES activities(id),
 	duration INTEGER ,
-	count INTEGER
+	count INTEGER,
+  UNIQUE (routine_id, activities_id)
 );
 
 `);
+
+    console.log("tables created!");
+  } catch (error) {
+    console.log("Error building tables!", error);
+  }
 };
 
 const seedDB = async () => {
   console.log("..seeding users");
-  for (const user of users) {
+  for (const user of testUsers) {
     await createUser(user);
   }
+  console.log("users created!");
 };
 
-async function testFitnessDB() {
+async function rebuildDB() {
   try {
     client.connect();
-    const result = await client.query(`SELECT * FROM users;`);
-    console.log(result);
+    await dropTables();
+    await createTables();
+    await seedDB();
   } catch (error) {
-    console.error(error);
+    console.log("Error during rebuildDB");
+    throw error;
   } finally {
     client.end();
   }
 }
 
-testFitnessDB();
+rebuildDB();
