@@ -1,18 +1,17 @@
-// // create table for routineActivities
-// const { client } = require("../client");
-// //getting routine by id
-// const  = async ({ creator_id, is_public, name, goal }) => {
-//   const {
-//     rows: [routine],
-//   } = await client.query(
-//     `
-//         INSERT INTO routines (creator_id, is_public, name, goal)
-//         VALUES ($1, $2, $3,$4)
-//         RETURNING *
-//     `,
-//     [creator_id, is_public, name, goal]
-//   );
-//   return routine;
-// };
+const { client } = require("../client");
+//getting routine by id
+const createRa = async ({ routine_id, activities_id, duration, count }) => {
+  const {
+    rows: [rActivities],
+  } = await client.query(
+    `
+        INSERT INTO routine_activities (routine_id, activities_id, duration, count )
+        VALUES ($1, $2, $3,$4)
+        RETURNING *
+    `,
+    [routine_id, activities_id, duration, count]
+  );
+  return rActivities;
+};
 
-// module.exports = { createRoutine };
+module.exports = { createRa };

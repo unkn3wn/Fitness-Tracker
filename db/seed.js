@@ -3,10 +3,10 @@ const {
   testUsers,
   testRoutines,
   testActivities,
-  testroutineactivities,
+  testRoutineActivities,
 } = require("./seedData");
 const { createRoutine } = require("../db/adapters/routines");
-
+const { createRa } = require("../db/adapters/routine_activites");
 const {
   createUser,
   getUsers,
@@ -89,6 +89,12 @@ const seedDB = async () => {
     await createRoutine(routine);
   }
   console.log("routine created");
+
+  // seeding routines_activities
+  for (const rActivities of testRoutineActivities) {
+    await createRoutine(rActivities);
+  }
+  console.log("routine_activities created");
 };
 
 async function rebuildDB() {
