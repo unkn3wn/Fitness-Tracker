@@ -1,5 +1,12 @@
 const { client } = require("./client");
-const { testUsers } = require("./seedData");
+const {
+  testUsers,
+  testRoutines,
+  testActivities,
+  testroutineactivities,
+} = require("./seedData");
+const { createRoutine } = require("../db/adapters/routines");
+
 const {
   createUser,
   getUsers,
@@ -13,8 +20,8 @@ const dropTables = async () => {
   await client.query(`
   DROP TABLE IF EXISTS routine_activities;
   DROP TABLE IF EXISTS routines;
-  DROP TABLE IF EXISTS users;
   DROP TABLE IF EXISTS activities;
+  DROP TABLE IF EXISTS users;
   `);
 };
 
@@ -76,6 +83,12 @@ const seedDB = async () => {
     await createUser(user);
   }
   console.log("users created!");
+
+  //seeding Routines
+  for (const routine of testRoutines) {
+    await createRoutine(routine);
+  }
+  console.log("routine created");
 };
 
 async function rebuildDB() {

@@ -1,36 +1,17 @@
-const client = require("../client");
-
-//getting routine by id 
-const getRoutineById = async (id) => {
+const { client } = require("../client");
+//getting routine by id
+const createRoutine = async ({ creator_id, is_public, name, goal }) => {
   const {
-    rows: [Routine],
+    rows: [routine],
   } = await client.query(
     `
-    SELECT * FROM Routine
-    WHERE id = $1
-  `,
-    [id]
+        INSERT INTO routines (creator_id, is_public, name, goal)
+        VALUES ($1, $2, $3,$4)
+        RETURNING *
+    `,
+    [creator_id, is_public, name, goal]
   );
-  return Routine;
+  return routine;
 };
 
-const getRoutinesWithoutActivities = async()=>{
-  const{
-    rows
-  } = await client.query(`
-    SELECT * FROM Routines
-      WHERE Activities = null;
-  `)
-}
-
-//getting all routines
-const getAllRoutines = async()=>{
-   const{
-    rows:[Routines]
-   } = await client.query(`
-    SELECT * FROM ROUTINES
-     JOIN Activites; 
-   `)
-
-
-}
+module.exports = { createRoutine };
