@@ -1,10 +1,25 @@
 const { client } = require("./client");
-const {testUsers, testRoutines, testActivities, testRoutineActivities} = require("./seedData");
-const { createActivites } = require("../db/adapters/activites");
+const {
+  testUsers,
+  testRoutines,
+  testActivities,
+  testRoutineActivities,
+} = require("./seedData");
+const {
+  createActivites,
+  getActivityById,
+  getAllActivities,
+  updateActivity,
+} = require("../db/adapters/activites");
 const { createRoutine } = require("../db/adapters/routines");
 const { createRa } = require("../db/adapters/routine_activites");
 
-const {createUser, getUsers,getUserByID,getUserByUsername,} = require("../db/adapters/users");
+const {
+  createUser,
+  getUsers,
+  getUserByID,
+  getUserByUsername,
+} = require("../db/adapters/users");
 
 //DROPPING TABLES
 const dropTables = async () => {
@@ -28,7 +43,7 @@ const createTables = async () => {
     username varchar(255) UNIQUE NOT NULL,
     password varchar(255) NOT NULL
   );
-  `); 
+  `);
 
     //ROUTINES TABLE
     await client.query(`
@@ -82,7 +97,7 @@ const seedDB = async () => {
   }
   console.log("routine created");
 
-  //seeding routines
+  //seeding activity
   console.log("making activities");
   for (const activity of testActivities) {
     await createActivites(activity);
@@ -95,6 +110,21 @@ const seedDB = async () => {
     await createRa(rActivities);
   }
   console.log("routine_activities created");
+
+  console.log("getting activities by Id");
+  for (const gabi of testActivities) {
+    await getActivityById(gabi);
+  }
+
+  console.log(" getting all activities");
+  for (const allActivities of testActivities) {
+    await getAllActivities(allActivities);
+  }
+
+  console.log("finised updating activities ");
+  for (const update_activity of testActivities) {
+    await updateActivity(update_activity);
+  }
 };
 
 async function rebuildDB() {
