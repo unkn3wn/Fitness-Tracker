@@ -1,20 +1,10 @@
 const { client } = require("./client");
-const {
-  testUsers,
-  testRoutines,
-  testActivities,
-  testRoutineActivities,
-} = require("./seedData");
+const {testUsers, testRoutines, testActivities, testRoutineActivities} = require("./seedData");
 const { createActivites } = require("../db/adapters/activites");
 const { createRoutine } = require("../db/adapters/routines");
 const { createRa } = require("../db/adapters/routine_activites");
 
-const {
-  createUser,
-  getUsers,
-  getUserByID,
-  getUserByUsername,
-} = require("../db/adapters/users");
+const {createUser, getUsers,getUserByID,getUserByUsername,} = require("../db/adapters/users");
 
 //DROPPING TABLES
 const dropTables = async () => {
@@ -38,7 +28,7 @@ const createTables = async () => {
     username varchar(255) UNIQUE NOT NULL,
     password varchar(255) NOT NULL
   );
-  `);
+  `); 
 
     //ROUTINES TABLE
     await client.query(`
