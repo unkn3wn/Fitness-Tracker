@@ -120,11 +120,17 @@ const seedDB = async () => {
   for (const allActivities of testActivities) {
     await getAllActivities(allActivities);
   }
-
   console.log("finised updating activities ");
-  for (const update_activity of testActivities) {
-    await updateActivity(update_activity);
+
+
+
+
+  for (const activity of testActivities) {
+    await updateActivity(activity);
   }
+
+
+
 };
 
 async function rebuildDB() {

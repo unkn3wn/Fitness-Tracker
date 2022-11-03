@@ -37,32 +37,28 @@ const createActivites = async ({ name, description }) => {
   return activity;
 };
 
-const updateActivity = async ({ name, description }) => {
-  const setString = Object.keys(description)
-    .map((key, index) => `"${key}"=$${index + 1}`)
-    .join(", ");
+const updateActivity = async ({ activities_id, fields }) => {
+  const setString = Object.keys(fields)
+    .map((key, index) => `"${key}"= $${index + 1}`)
+    .join(",");
 
-  // return early if this is called without fields
   if (setString.length === 0) {
     return;
   }
-
   try {
     const {
-      rows: [update_activity],
+      rows: [activity],
     } = await client.query(
       `
-      UPDATE users
       SET ${setString}
-      WHERE name=${name}
+      WHERE id=${activities_id}
       RETURNING *;
     `,
-      Object.values(description)
+      Object.values(fields)
     );
-
-    return update_activity;
+    return activity;
   } catch (error) {
-    throw error;
+    console.error("ERROR IN UPDATING ACTIVITy");
   }
 };
 
