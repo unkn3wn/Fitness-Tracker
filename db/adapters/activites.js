@@ -36,12 +36,14 @@ const createActivites = async ({ name, description }) => {
   );
   return activity;
 };
-
-const updateActivity = async ({ activities_id, fields }) => {
+{
+  name: "a";
+}
+const updateActivity = async (activity_id, fields) => {
   const setString = Object.keys(fields)
-    .map((key, index) => `"${key}"= $${index + 1}`)
+    .map((key, index) => `"${key}"=$${index + 1}`)
     .join(",");
-
+  console.log(setString);
   if (setString.length === 0) {
     return;
   }
@@ -50,15 +52,16 @@ const updateActivity = async ({ activities_id, fields }) => {
       rows: [activity],
     } = await client.query(
       `
+      UPDATE activities
       SET ${setString}
-      WHERE id=${activities_id}
+      WHERE id=${activity_id}
       RETURNING *;
     `,
       Object.values(fields)
     );
     return activity;
   } catch (error) {
-    console.error("ERROR IN UPDATING ACTIVITy");
+    console.error(error);
   }
 };
 

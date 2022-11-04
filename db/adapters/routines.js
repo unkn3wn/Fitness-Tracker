@@ -222,37 +222,63 @@ const createRoutine = async ({ creator_id, is_public, name, goal }) => {
   );
   return routine;
 };
-//updating a routine
-async function updateRoutine(is_public, name, goal = {}) {
-  // build the set string
-  const setString = Object.keys(is_public, name, goal)
-    .map((key, index) => `"${key}"=$${index + 1}`)
-    .join(", ");
+// //updating a routine
+// async function updateRoutine(is_public, name, goal = {}) {
+//   // build the set string
+//   const setString = Object.keys(is_public, name, goal)
+//     .map((key, index) => `"${key}"=$${index + 1}`)
+//     .join(", ");
 
-  // return early if this is called without fields
+//   // return early if this is called without fields
+//   if (setString.length === 0) {
+//     return;
+//   }
+
+//   try {
+//     const {
+//       rows: [u_post],
+//     } = await client.query(
+//       `
+//         UPDATE users
+//         SET ${setString}
+//         WHERE is_public = ${is_public}, name = ${name}, goal = ${goal}
+
+//         RETURNING *;
+//       `,
+//       Object.values(is_public, name, goal)
+//     );
+
+//     return u_post;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
+
+const updateRoutine = async ({ routines_id, fields }) => {
+  const setString = Object.keys(fields)
+    .map((key, index) => `"${key}"= $${index + 1}`)
+    .join(",");
+
   if (setString.length === 0) {
     return;
   }
-
   try {
     const {
-      rows: [u_post],
+      rows: [routine],
     } = await client.query(
       `
-        UPDATE users
-        SET ${setString}
-        WHERE is_public = ${is_public}, name = ${name}, goal = ${goal}
-         
-        RETURNING *;
-      `,
-      Object.values(is_public, name, goal)
+      SET ${setString}
+      WHERE id=${routines_id}
+      RETURNING *;
+    `,
+      Object.values(fields)
     );
-
-    return u_post;
+    return routine;
   } catch (error) {
-    throw error;
+    console.error("ERROR IN UPDATING ROUTINE");
   }
-}
+};
+
 //deleting routines
 const destroyRoutine = async () => {
   const {
