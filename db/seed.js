@@ -11,7 +11,18 @@ const {
   getAllActivities,
   updateActivity,
 } = require("../db/adapters/activites");
-const { createRoutine } = require("../db/adapters/routines");
+const {
+  getRoutineById,
+  getRoutinesWithoutActivites,
+  getAllRoutines,
+  getAllPublicRoutines,
+  getAllRoutinesByUser,
+  getPublicRoutinesByUser,
+  getPublicRoutinesByActivity,
+  createRoutine,
+  updateRoutine,
+  destroyRoutine,
+} = require("../db/adapters/routines");
 const { createRa } = require("../db/adapters/routine_activites");
 
 const {
@@ -84,47 +95,64 @@ const createTables = async () => {
   }
 };
 
-const seedDB = async () => {
+const seedUser = async () => {
   console.log("..seeding users");
   for (const user of testUsers) {
     await createUser(user);
   }
   console.log("users created!");
+};
 
-  // seeding Routines
+const seedRoutines = async () => {
+  ///////////////////////////////////////////
+  console.log("creating routine");
   for (const routine of testRoutines) {
     await createRoutine(routine);
   }
-  console.log("routine created");
+  console.log("routine table created");
+  ////////////////////////////////////////////
+  //getting by id
+  console.log("getting routine by id");
+  const routineById = await getRoutineById(2);
+  console.log("result:", routineById);
+  ///////////////////////////////////////////////
+  console.log("ROUTINES WITHOUT ACTIVITES......");
+  for (const r_without_activties of testRoutines) {
+    await getRoutinesWithoutActivites(r_without_activties);
+  }
+  console.log("success");
+  ////////////////////////////////////////////////
+  for (const allRoutines of testRoutines) {
+    await getAllRoutines(allRoutines);
+  }
+  console.log("succes2");
+  ///////////////////////////////////////////////
+  for (const public_routines of testRoutines) {
+    await getAllPublicRoutines(public_routines);
+  }
+  console.log("succes3");
+  //////////////////////////////////////////
+  console.log("getting routine by id");
+  const hello = await getAllRoutinesByUser("David");
+  console.log("result:", hello);
+};
 
-  //seeding activity
+const seedActivites = async () => {
+  //seeding activites
+  console.log("getting activities by Id");
+  for (const gabi of testActivities) {
+    await getActivityById(gabi);
+  }
   console.log("making activities");
   for (const activity of testActivities) {
     await createActivites(activity);
   }
   console.log("activities made");
-
-  // // seeding routines_activities
-  console.log("making routine activities");
-  for (const rActivities of testRoutineActivities) {
-    await createRa(rActivities);
-  }
-  console.log("routine_activities created");
-
-  console.log("getting activities by Id");
-  for (const gabi of testActivities) {
-    await getActivityById(gabi);
-  }
-
   console.log(" getting all activities");
   for (const allActivities of testActivities) {
     await getAllActivities(allActivities);
   }
   console.log("finised getting all activities ");
-
-  console.log("updating activity ");
-
-  console.log("updating activity complete");
 };
 
 async function rebuildDB() {
@@ -132,7 +160,9 @@ async function rebuildDB() {
     client.connect();
     await dropTables();
     await createTables();
-    await seedDB();
+    await seedUser();
+    await seedRoutines();
+    await seedActivites();
   } catch (error) {
     console.log("Error during rebuildDB");
     throw error;
