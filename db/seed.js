@@ -27,7 +27,7 @@ const { createRa } = require("../db/adapters/routine_activites");
 
 const {
   createUser,
-  getUsers,
+  getUser,
   getUserByID,
   getUserByUsername,
 } = require("../db/adapters/users");
@@ -163,16 +163,23 @@ const seedActivites = async () => {
   for (const gabi of testActivities) {
     await getActivityById(gabi);
   }
+  ///////////////////////////////////////
   console.log("making activities");
   for (const activity of testActivities) {
     await createActivites(activity);
   }
   console.log("activities made");
+  ///////////////////////////////////////////
   console.log(" getting all activities");
   for (const allActivities of testActivities) {
     await getAllActivities(allActivities);
   }
   console.log("finised getting all activities ");
+  ////////////////////////////////////////////////////////
+
+  ///////////////////////////////////////////////////////
+
+  ///////////////////////////////////////////////////////
 };
 
 async function rebuildDB() {

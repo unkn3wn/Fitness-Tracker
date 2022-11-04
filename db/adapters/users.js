@@ -1,25 +1,35 @@
 const { client } = require("../client");
 //make sure to hash the password before storing it to the database
 const createUser = async ({ username, password }) => {
-  const {
-    rows: [createdUser],
-  } = await client.query(
-    `
-        INSERT INTO users (username, password)
-        VALUES ($1, $2)
-        RETURNING *
-    `,
-    [username, password]
-  );
-  return createdUser;
+  try {
+    const {
+      rows: [createdUser],
+    } = await client.query(
+      `
+          INSERT INTO users (username, password)
+          VALUES ($1, $2)
+          RETURNING *
+      `,
+      [username, password]
+    );
+    return createdUser;
+  } catch (error) {
+    throw error;
+  }
 };
 
 //this should be able to verify the password against the hashed password
-const getUsers = async () => {
-  const { rows } = await client.query(`
+const getUser = async (username, password) => {
+  try {
+    const {
+      rows: [oneuser],
+    } = await client.query(`
           SELECT * FROM users
       `);
-  return rows;
+    return oneuser;
+  } catch {
+    throw error;
+  }
 };
 
 const getUserByID = async (id) => {
@@ -28,7 +38,7 @@ const getUserByID = async (id) => {
       rows: [users],
     } = await client.query(`
           SELECT id FROM users
-          WHERE id =${userId};
+          WHERE id =${id};
         `);
     if (!users) {
       return null;
@@ -64,7 +74,7 @@ const getUserByUsername = async (username) => {
 module.exports = {
   client,
   createUser,
-  getUsers,
+  getUser,
   getUserByID,
   getUserByUsername,
 };
