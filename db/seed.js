@@ -104,11 +104,6 @@ const seedUser = async () => {
 };
 
 const seedRoutines = async () => {
-  ///////////////////////////////////////////
-  console.log("creating routine");
-  for (const routine of testRoutines) {
-    await createRoutine(routine);
-  }
   console.log("routine table created");
   ////////////////////////////////////////////
   //getting by id
@@ -125,16 +120,41 @@ const seedRoutines = async () => {
   for (const allRoutines of testRoutines) {
     await getAllRoutines(allRoutines);
   }
-  console.log("succes2");
+  console.log("success2");
   ///////////////////////////////////////////////
   for (const public_routines of testRoutines) {
     await getAllPublicRoutines(public_routines);
   }
-  console.log("succes3");
-  //////////////////////////////////////////
+  console.log("success3");
+  //////////////////////////////////////////////
   console.log("getting routine by id");
   const hello = await getAllRoutinesByUser("David");
   console.log("result:", hello);
+
+  //////////////////////////////////////////////
+  console.log("getting all public routines by user");
+  const hl = await getPublicRoutinesByUser("David");
+  console.log("result:", hl);
+
+  //////////////////////////////////////////////
+  console.log("getting all public routines by activity");
+  const h2 = await getPublicRoutinesByActivity(1);
+  console.log("result:", h2);
+
+  /////////////////////////////////////////////
+  console.log("creating routine");
+  for (const routine of testRoutines) {
+    await createRoutine(routine);
+  }
+
+  /////////////////////////////////////////////
+  console.log("updating a routine");
+  const h3 = await updateRoutine(1, {
+    is_public: false,
+    name: "monday",
+    goal: "do chest and triceps",
+  });
+  console.log("result:", h3);
 };
 
 const seedActivites = async () => {
@@ -162,7 +182,7 @@ async function rebuildDB() {
     await createTables();
     await seedUser();
     await seedRoutines();
-    await seedActivites();
+    // await seedActivites();
   } catch (error) {
     console.log("Error during rebuildDB");
     throw error;

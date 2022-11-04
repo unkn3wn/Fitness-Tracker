@@ -7,7 +7,6 @@ const getRoutineById = async (id) => {
       rows: [routine],
     } = await client.query(`
     SELECT routines.*,  users.username AS "creatorName",
- 			
     CASE WHEN ra."routine_id" is NULL THEN'[]'::json
     ELSE
     JSON_AGG(
@@ -115,28 +114,27 @@ const getAllPublicRoutines = async () => {
 const getAllRoutinesByUser = async (username) => {
   try {
     const { rows: routines_user } = await client.query(`
-    SELECT routines.*,  users.username AS "creatorName"   
-        CASE WHEN ra."routine_id" is NULL THEN'[]'::json
-        ELSE
-        JSON_AGG(
-            JSON_BUILD_OBJECT(
-            'id', activities.id,
-            'name', activities.name,
-            'description', activities.description,
-            'count', ra.count,
-            'duration', ra.duration
-                )
-                  ) END AS activities
-                            FROM routines
-               
-              LEFT JOIN routine_activities AS ra
-              s  ON routines.id = ra."routine_id"
-              LEFT JOIN activities 
-                ON ra."activity_id" = activities.id
-              JOIN users
-                ON routines."creator_id" = users.id	
-                  WHERE users.username='${username}'
-               GROUP BY routines.id, ra."routine_id", users.username
+    SELECT routines.*,  users.username AS "creatorName",      
+    CASE WHEN ra."routine_id" is NULL THEN'[]'::json
+    ELSE
+    JSON_AGG(
+        JSON_BUILD_OBJECT(
+        'id', activities.id,
+        'name', activities.name,
+        'description', activities.description,
+        'count', ra.count,
+        'duration', ra.duration
+         )
+        ) END AS activities
+                FROM routines
+                LEFT JOIN routine_activities AS ra
+         ON routines.id = ra."routine_id"
+        LEFT JOIN activities 
+        ON ra."activity_id" = activities.id
+        JOIN users
+         ON routines."creator_id" = users.id	
+        WHERE users.username='${username}'
+        GROUP BY routines.id, ra."routine_id", users.username
     `);
     return routines_user;
   } catch (error) {
@@ -144,68 +142,65 @@ const getAllRoutinesByUser = async (username) => {
   }
 };
 
-const getPublicRoutinesByUser = async () => {
+const getPublicRoutinesByUser = async (username) => {
   try {
-    const {
-      rows: [PRBU],
-    } = await client.query(`
-    SELECT routines.*, users.username AS "creatorName",
-	CASE WHEN ra."routineId" is NULL THEN'[]'::json
-	ELSE
-	JSON_AGG(
-		JSON_BUILD_OBJECT(
-		'id', activities.id,
-		'name', activities.name,
-		'description', activities.description,
-		'count', ra.count,
-		'duration', ra.duration
-		)
-	) END AS activities
-	FROM routines	
-	LEFT JOIN routine_activities AS ra
-		ON routines.id = ra."routineId"
-	LEFT JOIN activities 
-		ON ra."activityId" = activities.id
-	JOIN users
-		ON routines."creatorId" = users.id	
-    WHERE routines.is_public = true AND users.username=$1
-	GROUP BY routines.id, ra."routineId", users.username
+    const { rows: PRBU } = await client.query(`
+    SELECT routines.*,  users.username AS "creatorName",
+    CASE WHEN ra."routine_id" is NULL THEN'[]'::json
+    ELSE
+    JSON_AGG(
+        JSON_BUILD_OBJECT(
+        'id', activities.id,
+        'name', activities.name,
+        'description', activities.description,
+        'count', ra.count,
+        'duration', ra.duration
+         )
+        ) END AS activities
+                FROM routines
+                LEFT JOIN routine_activities AS ra
+         ON routines.id = ra."routine_id"
+        LEFT JOIN activities 
+          ON ra."activity_id" = activities.id
+        JOIN users
+          ON routines."creator_id" = users.id	
+        WHERE users.username='${username}' AND routines.is_public = true
+          GROUP BY routines.id, ra."routine_id", users.username
     `);
     return PRBU;
   } catch (error) {
-    console.error("ERORR IN GET_PUBLIC_ROUTINES_BY-USER");
+    throw error;
   }
 };
 //select and retunr an array of public routines whihc hace a specific activy_iud intheir routine_activites join, inlucde their activites(use join)
-const getPublicRoutinesByActivity = async () => {
+const getPublicRoutinesByActivity = async (activityId) => {
   try {
-    const {
-      rows: [prba],
-    } = await client.query(`
-    SELECT routines.*, users.username AS "creatorName",
-	CASE WHEN ra."routineId" is NULL THEN'[]'::json
-	ELSE
-	JSON_AGG(
-		JSON_BUILD_OBJECT(
-		'id', activities.id,
-		'name', activities.name,
-		'description', activities.description,
-		'count', ra.count,
-		'duration', ra.duration
-		)
-	) END AS activities
-	FROM routines	
-	LEFT JOIN routine_activities AS ra
-		ON routines.id = ra."routineId"
-	LEFT JOIN activities 
-		ON ra."activityId" = activities.id
-	JOIN users
-		ON routines."creatorId" = users.id	
-	GROUP BY routines.id, ra."routineId", users.username
+    const { rows: prba } = await client.query(`
+    SELECT routines.*,  users.username AS "creatorName",                    
+    CASE WHEN ra."routine_id" is NULL THEN'[]'::json
+    ELSE
+    JSON_AGG(
+      JSON_BUILD_OBJECT(
+      'id', activities.id,
+      'name', activities.name,
+      'description', activities.description,
+      'count', ra.count,
+      'duration', ra.duration
+       )
+      ) END AS activities
+     FROM routines         
+          LEFT JOIN routine_activities AS ra
+    ON routines.id = ra."routine_id"
+    LEFT JOIN activities 
+    ON ra."activity_id" = activities.id
+    JOIN users
+    ON routines."creator_id" = users.id	
+    WHERE activities.id = ${activityId} AND routines.is_public = true
+   GROUP BY routines.id, ra."routine_id", users.username
     `);
     return prba;
   } catch (error) {
-    console.error("ERROR IN PUBLIC_ROUTINES_BY_ACTIVTY");
+    throw error;
   }
 };
 //getting routine by id//should be NUmber 8
@@ -224,7 +219,7 @@ const createRoutine = async ({ creator_id, is_public, name, goal }) => {
 };
 
 //updating routines
-const updateRoutine = async ({ routines_id, fields }) => {
+const updateRoutine = async (routines_id, fields) => {
   const setString = Object.keys(fields)
     .map((key, index) => `"${key}"= $${index + 1}`)
     .join(",");
@@ -237,6 +232,7 @@ const updateRoutine = async ({ routines_id, fields }) => {
       rows: [routine],
     } = await client.query(
       `
+      UPDATE routines
       SET ${setString}
       WHERE id=${routines_id}
       RETURNING *;
@@ -250,12 +246,14 @@ const updateRoutine = async ({ routines_id, fields }) => {
 };
 
 //deleting routines
-const destroyRoutine = async () => {
+const destroyRoutine = async (routineId) => {
   const {
     rows: [dR],
   } = await client.query(
     `
-    DELETE FROM routines WHERE routineId = ${id}
+    DELETE FROM routines 
+      WHERE routine.Id = ${id}
+      RETURNING *;
    `
   );
   return dR;
