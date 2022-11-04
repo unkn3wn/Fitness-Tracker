@@ -107,4 +107,11 @@ const getRoutineActivitiesByRoutine = async (routineId) => {
     throw error;
   }
 };
-module.exports = { createRa };
+module.exports = {
+  createRa,
+  getRoutineActivtyByid,
+  addActivityToRoutine,
+  updateRoutineActiity,
+  destroyRoutineActivity,
+  getRoutineActivitiesByRoutine,
+};
