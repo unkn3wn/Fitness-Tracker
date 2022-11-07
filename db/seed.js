@@ -156,6 +156,12 @@ const seedRoutines = async () => {
   });
   console.log("result:", h3);
 };
+///////////////////////////////////////////
+console.log("destroying a routine");
+for (const dR of testRoutines) {
+  await destroyRoutine(1);
+  console.log("Result:", dR);
+}
 
 const seedActivites = async () => {
   //seeding activites
@@ -176,7 +182,12 @@ const seedActivites = async () => {
   }
   console.log("finised getting all activities ");
   ////////////////////////////////////////////////////////
-
+  console.log("updating an activity");
+  const activity = await updateActivity(1, {
+    name: "arms",
+    description: "dumbell curls, triceps, and forearms",
+  });
+  console.log("Result:", activity);
   ///////////////////////////////////////////////////////
 
   ///////////////////////////////////////////////////////
