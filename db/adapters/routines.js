@@ -205,17 +205,21 @@ const getPublicRoutinesByActivity = async (activityId) => {
 };
 //getting routine by id//should be NUmber 8
 const createRoutine = async ({ creator_id, is_public, name, goal }) => {
-  const {
-    rows: [routine],
-  } = await client.query(
-    `
-        INSERT INTO routines (creator_id, is_public, name, goal)
-        VALUES ($1, $2, $3,$4)
-        RETURNING *
-    `,
-    [creator_id, is_public, name, goal]
-  );
-  return routine;
+  try{
+    const {
+      rows: [rou],
+    } = await client.query(
+      `
+          INSERT INTO routines (creator_id, is_public, name, goal)
+          VALUES ($1, $2, $3,$4)
+          RETURNING *
+      `,
+      [creator_id, is_public, name, goal]
+    );
+    return rou;
+  }catch(error){
+    throw error;
+  }
 };
 
 //updating routines
