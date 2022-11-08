@@ -135,21 +135,21 @@ const seedRoutines = async () => {
 
 //PUBLIC ROUTINES BY USER
   console.log("getting all public routines by user");
-  const hl = await getPublicRoutinesByUser("David");
+      const hl = await getPublicRoutinesByUser("David");
   console.log("result:", hl);
 
 //PUBLIC ROUTINES BY ACTI
   console.log("getting all public routines by activity");
-  const h2 = await getPublicRoutinesByActivity(1);
+      const h2 = await getPublicRoutinesByActivity(1);
   console.log("result:", h2);
 
 //creating routine user
   console.log("seeding creating routine");
-  for(const rou of testRoutines){
-    await createRoutine(rou);
-  }
+      for(const rou of testRoutines){
+        await createRoutine(rou);
+      }
   console.log("finished screating a routine");
-  /////////////////////////////////////////////
+  //UPDATING ROUTINE 
   console.log("updating a routine");
   const h3 = await updateRoutine(1, {
     is_public: false,
@@ -158,7 +158,7 @@ const seedRoutines = async () => {
   });
   console.log("result:", h3);
 };
-
+console.log("hello kids")
 const seedActivites = async () => {
 //seeding activites
   console.log("getting activities by Id");
