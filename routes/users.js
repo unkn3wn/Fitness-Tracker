@@ -39,7 +39,7 @@ authRouter.post("/logout", async (req, res, next) => {
     next(error);
   }
 });
-authRouter.get("/me", authRequried, async (req, res, next) => {
+authRouter.get("/me", authRequired, async (req, res, next) => {
   try {
     res.send(req.user);
   } catch (error) {
