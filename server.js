@@ -1,47 +1,24 @@
-const http = require("http");
+const express = require("express");
+const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
+const { client } = require("./db/client");
+const { Router } = require("express");
+const { COOKIE_SECRET } = process.env;
+const app = express();
+const PORT = 8080;
 
-const {PORT = 8080} = process.env;
+require("dotenv").config();
+client.connect();
+app.use(morgan("dev"));
+app.use(express.json());
+app.use(cookieParser(COOKIE_SECRET));
 
-const server = http.createServer(app);
+app.use("routes", Router);
 
-server.listen(PORT,()=>{
-    console.log(`port ${PORT}`)
-})
+app.use((err, req, res, next) => {
+  res.status(500).send(err);
+});
 
-// require("dotenv").config();
-
-// const express = require("express");
-// const morgan = require("morgan");
-// const cookieParser = require("cookie-parser");
-// const {COOKIE_SECRET} = process.env;
-// const {authRequired} = require("./routes/utils");
-// const client = require("./db/client");
-
-// const app = express();
-// const PORT = 8080;
-
-// client.connect();
-
-// const router = require("./routes");
-// const { server } = require("http");
-// //Middleware
-
-// app.use(morgan("dev"));
-// app.use(cookieParser(COOKIE_SECRET));
-// app.use(express.json());
-
-// //routers
-// app.use("/api", router);
-// app.get("/test", authRequired, (req, res, next)=>{
-//     res.send("You are auth")
-// })
-// console.log("server running")
-// //EROR HANDLER
-// app.use((err,req,res,next)=>{
-//     res.status(500).send(err);
-// })
-
-
-// server.listen(PORT,()=>{
-//     console.log(`APP LISTENING ON PORT ${PORT}`)
-// })
+app.listen(PORT, () => {
+  console.log(`PORT is ${PORT}`);
+});
