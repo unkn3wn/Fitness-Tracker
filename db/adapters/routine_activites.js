@@ -8,7 +8,7 @@ const getRoutineActivtyByid = async (id) => {
     } = await client.query(`
       SELECT * FROM routine_activities 
       WHERE routine_activities.id = ${id}
-    
+     
     `);
     return GRABI;
   } catch (error) {
@@ -39,7 +39,7 @@ const addActivityToRoutine = async ({
   }
 };
 //now we want to update our routines
-const updateRoutineActiity = async (ura, fields) => {
+const updateRoutineActivity = async (ura, fields) => {
   const setString = Object.keys(fields)
     .map((key, index) => `"${key}"= $${index + 1}`)
     .join(",");
@@ -79,20 +79,6 @@ const destroyRoutineActivity = async (id) => {
     throw error;
   }
 };
-const createRa = async ({ routine_id, activity_id, duration, count }) => {
-  const {
-    rows: [rActivities],
-  } = await client.query(
-    `
-        INSERT INTO routine_activities (routine_id, activity_id, duration, count )
-        VALUES ($1, $2, $3,$4)
-        RETURNING *
-    `,
-    [routine_id, activity_id, duration, count]
-  );
-  return rActivities;
-};
-
 const getRoutineActivitiesByRoutine = async (routineId) => {
   try {
     const {
@@ -108,10 +94,9 @@ const getRoutineActivitiesByRoutine = async (routineId) => {
   }
 };
 module.exports = {
-  createRa,
   getRoutineActivtyByid,
   addActivityToRoutine,
-  updateRoutineActiity,
+  updateRoutineActivity,
   destroyRoutineActivity,
   getRoutineActivitiesByRoutine,
 };

@@ -1,4 +1,5 @@
 const { client } = require("./client");
+//importing
 const {
   testUsers,
   testRoutines,
@@ -24,10 +25,10 @@ const {
   destroyRoutine,
 } = require("../db/adapters/routines");
 
-const { createRa, 
+const {  
   getRoutineActivtyByid,
   addActivityToRoutine,
-  updateRoutineActiity,
+  updateRoutineActivity,
   destroyRoutineActivity,
   getRoutineActivitiesByRoutine, } = require("../db/adapters/routine_activites");
 
@@ -99,6 +100,26 @@ const createTables = async () => {
     throw error ;
   }
 };
+
+//seeding
+const seedUsers = async()=>{
+  //creating users
+     console.log("creating users")
+    for(const createdUser of testUsers){
+      await createUser(createdUser);
+    }
+    console.log("done creating users")
+  //getting user by id
+    console.log("getting users by id")
+    const h2 = await getUserById(2);
+    console.log("result:", h2);
+  //getting username
+  console.log("...getting a userby username")
+    const h3 = await getUserByUsername("Ferni");
+    console.log("result:", h3);
+    console.log("done getting user by username")
+  
+  }
 
 const seedRoutines = async () => {
 //GETTING ROUTINE BY ID
@@ -189,24 +210,41 @@ const seedActivites = async () => {
   
 };
 
-const seedUsers = async()=>{
-//creating users
-   console.log("creating users")
-  for(const createdUser of testUsers){
-    await createUser(createdUser);
-  }
-  console.log("done creating users")
-//getting user by id
-  console.log("getting users by id")
-  const h2 = await getUserById(2);
-  console.log("result:", h2);
-//getting username
-console.log("...getting a userby username")
-  const h3 = await getUserByUsername("Ferni");
-  console.log("result:", h3);
-  console.log("done getting user by username")
+const seedRoutineActivites = async () =>{
+
+//GETTING ROUTINE BY ID
+  console.log("getting routine by id");
+    const h1 = await getRoutineActivtyByid(1);
+  console.log("Result:", h1);
+
+//ADDING ACTIVITY ROUTINE
+  console.log("adding to activity routine")
+    for(const AATR of testRoutineActivities){
+      await addActivityToRoutine(AATR);
+    }
+  console.log("finsihed adding to activity routine");
+
+//UPDATING ROUTINE ACTIVITY
+console.log("updating routine activites")
+    const h2 = await updateRoutineActivity(1,{
+      duration:10, count:30,
+    });
+console.log("Result:", h2);
+
+//ROUTINE ACTIVITES BY ROUTINE
+console.log("getting routine activities by routine");
+    const h3 = await getRoutineActivitiesByRoutine(1);
+console.log("result:", h3);
+
+
+
+
+
+
 
 }
+
+
 async function rebuildDB() {
   try {
     client.connect();
@@ -215,6 +253,7 @@ async function rebuildDB() {
     await seedUsers();
     await seedRoutines()
     await seedActivites();
+    await seedRoutineActivites();
     
     
   } catch (error) {

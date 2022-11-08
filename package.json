@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon ./db/index.js",
     "seed:dev": "nodemon ./db/seed.js",
-    "seed": "node ./db/seed.js"
+    "seed": "node ./db/seed.js",
+    "start:server": "node ./db/index.js"
   },
   "keywords": [],
   "author": "",
