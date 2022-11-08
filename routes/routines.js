@@ -3,12 +3,10 @@ const { JWT_SECRET } = process.env;
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const {
-  getAllRoutines,
   getAllPublicRoutines,
   createRoutine,
   getRoutineById,
   updateRoutine,
-  destroyRoutine,
 } = require("../db/adapters/routines");
 const { testRoutines } = require("../db/seedData");
 const { authRequired } = require("./utils");
@@ -104,4 +102,4 @@ routinesRouter.delete("/routineId", requireUser, async (req, res, next) => {
   }
 });
 
-module.exports = { routinesRouter };
+module.exports = routinesRouter ;
