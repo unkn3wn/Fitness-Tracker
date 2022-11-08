@@ -158,7 +158,7 @@ const seedRoutines = async () => {
   });
   console.log("result:", h3);
 };
-console.log("hello kids")
+
 const seedActivites = async () => {
 //seeding activites
   console.log("getting activities by Id");
