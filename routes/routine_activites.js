@@ -38,7 +38,7 @@ routineActivitiesRouter.patch(
       updateFields.count = count;
     }
     if (duration) {
-      updateFields.duration = count;
+      updateFields.duration = duration;
     }
     try {
       const oRa = await getRoutineActivtyByid(routineActivityId);
