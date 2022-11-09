@@ -13,7 +13,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser(COOKIE_SECRET));
 
-app.use("routes", Router);
+app.use("/routes", Router);
 
 app.use((err, req, res, next) => {
   res.status(500).send(err);
