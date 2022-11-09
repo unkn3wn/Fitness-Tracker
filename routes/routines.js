@@ -74,7 +74,7 @@ routinesRouter.patch("/routineId:", authRequired, async (req, res, next) => {
   }
 });
 
-routinesRouter.delete("/routineId", requireUser, async (req, res, next) => {
+routinesRouter.delete("/routineId", authRequired, async (req, res, next) => {
   try {
     const deleteP = await getRoutineById(req.params.routineId);
 

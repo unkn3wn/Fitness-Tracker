@@ -14,7 +14,9 @@ const { authRequired } = require("./utils");
 const actRouter = express.Router();
 
 //getting all activities
+
 actRouter.get("/", async (req, res, next) => {
+  console.log("made it into get all activities");
   try {
     const aA = await getAllActivities();
     res.send(aA);
@@ -54,28 +56,30 @@ actRouter.patch("/:activityId", authRequired, async (req, res, next) => {
     updateFields.description = description;
   }
 
-  try {
+  try{
     const oA = await getActivityById(activityId);
-    if (oA.id === req.user.id) {
+    if(oA.id === req.user.id){
       const uA = await updateActivity(activityId, updateFields);
-    } else {
+      res.send({activity: uA})
+    }else{
       next({
-        name: "NOT AUTH",
-        message:
-          "not allowed to update activity if not yours or please login/register to an existing user",
+        name:"not auth",
+        message:"cannt update activity that is not yours",
       });
     }
-  } catch ({ name, message }) {
-    next({ name, message });
+  }catch(error){
+    throw error;
   }
+
 });
 
-//public routines which feature that activty
+// //public routines which feature that activty
 actRouter.get("/:activityId/routines", async (req, res, next) => {
   const { activityId } = req.params;
-  try {
+    
+  try{
     const rB = await getPublicRoutinesByActivity(activityId);
-
+    console.log(activityId);
     if (rB) {
       res.send({ routines: rB });
     } else {
@@ -84,8 +88,8 @@ actRouter.get("/:activityId/routines", async (req, res, next) => {
         message: "there is no link with activity and routine",
       });
     }
-  } catch ({ name, message }) {
-    next({ name, message });
+  }catch({name,message}){
+      next({name,message})
   }
 });
 

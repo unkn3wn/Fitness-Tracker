@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const {JWT_SECRET}= proecess.env;
+const {JWT_SECRET}= process.env;
 
 const authRequired = (req, res, next)=>{
     const token = req.signedCookies.token;
