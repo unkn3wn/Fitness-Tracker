@@ -36,7 +36,7 @@ const getRoutineById = async (id) => {
 };
 
 //select and return an array of all routines
-const getRoutinesWithoutActivites = async () => {
+const getRoutinesWithoutActivities = async () => {
   try {
     const {
       rows: [r_without_activties],
@@ -175,7 +175,7 @@ const getPublicRoutinesByUser = async (username) => {
 //select and retunr an array of public routines whihc hace a specific activy_iud intheir routine_activites join, inlucde their activites(use join)
 const getPublicRoutinesByActivity = async (activityId) => {
   try {
-    const { rows: prba } = await client.query(`
+    const {rows} = await client.query(`
     SELECT routines.*,  users.username AS "creatorName",                    
     CASE WHEN ra."routine_id" is NULL THEN'[]'::json
     ELSE
@@ -198,7 +198,7 @@ const getPublicRoutinesByActivity = async (activityId) => {
     WHERE activities.id = ${activityId} AND routines.is_public = true
    GROUP BY routines.id, ra."routine_id", users.username
     `);
-    return prba;
+    return rows;
   } catch (error) {
     throw error;
   }
@@ -265,7 +265,7 @@ const destroyRoutine = async (routineId) => {
 
 module.exports = {
   getRoutineById,
-  getRoutinesWithoutActivites,
+  getRoutinesWithoutActivities,
   getAllRoutines,
   getAllPublicRoutines,
   getAllRoutinesByUser,

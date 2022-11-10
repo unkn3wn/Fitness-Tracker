@@ -7,14 +7,14 @@ const {
   testRoutineActivities,
 } = require("./seedData");
 const {
-  createActivites,
+  createActivities,
   getActivityById,
   getAllActivities,
   updateActivity,
-} = require("../db/adapters/activites");
+} = require("../db/adapters/activities");
 const {
   getRoutineById,
-  getRoutinesWithoutActivites,
+  getRoutinesWithoutActivities,
   getAllRoutines,
   getAllPublicRoutines,
   getAllRoutinesByUser,
@@ -30,7 +30,7 @@ const {
   addActivityToRoutine,
   updateRoutineActivity,
   destroyRoutineActivity,
-  getRoutineActivitiesByRoutine, } = require("../db/adapters/routine_activites");
+  getRoutineActivitiesByRoutine, } = require("../db/adapters/routine_activities");
 
 const {
   createUser,
@@ -128,10 +128,10 @@ const seedRoutines = async () => {
       console.log("result:", routineById);
   console.log("finished getting routinebyId")
 
-//ROUTINE WITHOUT ACTIVITES
-  console.log("ROUTINES WITHOUT ACTIVITES......");
+//ROUTINE WITHOUT ACTIVITiES
+  console.log("ROUTINES WITHOUT ACTIVITiES......");
       for (const r_without_activties of testRoutines) {
-        await getRoutinesWithoutActivites(r_without_activties);
+        await getRoutinesWithoutActivities(r_without_activties);
       }
   console.log("finished routine without activities");
 
@@ -180,20 +180,20 @@ const seedRoutines = async () => {
   console.log("result:", h3);
 };
 
-const seedActivites = async () => {
-//seeding activites
+const seedActivities = async () => {
+//seeding activities
   console.log("getting activities by Id");
       for (const gabi of testActivities) {
         await getActivityById(gabi);
       }
-//creating activites
+//creating activities
   console.log("making activities");
        for (const activity of testActivities) {
-          await createActivites(activity);
+          await createActivities(activity);
         }
   console.log("activities made");
 
-//getting all the activites
+//getting all the activities
   console.log(" getting all activities");
       for (const allActivities of testActivities) {
         await getAllActivities(allActivities);
@@ -210,7 +210,7 @@ const seedActivites = async () => {
   
 };
 
-const seedRoutineActivites = async () =>{
+const seedRoutineActivities = async () =>{
 
 //GETTING ROUTINE BY ID
   console.log("getting routine by id");
@@ -225,13 +225,13 @@ const seedRoutineActivites = async () =>{
   console.log("finsihed adding to activity routine");
 
 //UPDATING ROUTINE ACTIVITY
-console.log("updating routine activites")
+console.log("updating routine activities")
     const h2 = await updateRoutineActivity(1,{
       duration:10, count:30,
     });
 console.log("Result:", h2);
 
-//ROUTINE ACTIVITES BY ROUTINE
+//ROUTINE ACTIVITiES BY ROUTINE
 console.log("getting routine activities by routine");
     const h3 = await getRoutineActivitiesByRoutine(1);
 console.log("result:", h3);
@@ -252,8 +252,8 @@ async function rebuildDB() {
     await createTables();
     await seedUsers();
     await seedRoutines()
-    await seedActivites();
-    await seedRoutineActivites();
+    await seedActivities();
+    await seedRoutineActivities();
     
     
   } catch (error) {

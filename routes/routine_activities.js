@@ -8,7 +8,7 @@ const {
   getRoutineActivtyByid,
   updateRoutineActivity,
   destroyRoutineActivity,
-} = require("../db/adapters/routine_activites");
+} = require("../db/adapters/routine_activities");
 const { authRequired } = require("./utils");
 const routineActivitiesRouter = express.Router();
 

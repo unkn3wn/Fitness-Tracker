@@ -1,15 +1,11 @@
 const express = require("express");
+
 const { JWT_SECRET } = process.env;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const {
-  getAllActivities,
-  createActivites,
-  updateActivity,
-  getActivityById,
-} = require("../db/adapters/activites");
-const { getPublicRoutinesByActivity } = require("../db/adapters/routines");
+const {Activity, Routine} = require("../db/adapters/index")
+
 const { authRequired } = require("./utils");
 const actRouter = express.Router();
 
@@ -18,7 +14,7 @@ const actRouter = express.Router();
 actRouter.get("/", async (req, res, next) => {
   console.log("made it into get all activities");
   try {
-    const aA = await getAllActivities();
+    const aA = await Activity.getAllActivities();
     res.send(aA);
   } catch (error) {
     next(error);
@@ -31,9 +27,9 @@ actRouter.post("/", authRequired, async (req, res, next) => {
   const { name, description } = req.body;
   try {
     const ardb = { name, description };
-    const acti = await createActivites(ardb);
+    const acti = await Activity.createActivities(ardb);
     if (acti) {
-      res.send({ acti });
+      res.send(acti);
     } else {
       //else if bad connection we send error 400 for bad connection
       res.status(400);
@@ -44,7 +40,7 @@ actRouter.post("/", authRequired, async (req, res, next) => {
   }
 });
 
-actRouter.patch("/:activityId", authRequired, async (req, res, next) => {
+actRouter.patch("/:activityId", async (req, res, next) => {
   const { activityId } = req.params;
   const { name, description } = req.body;
   const updateFields = {};
@@ -57,9 +53,9 @@ actRouter.patch("/:activityId", authRequired, async (req, res, next) => {
   }
 
   try{
-    const oA = await getActivityById(activityId);
-    if(oA.id === req.user.id){
-      const uA = await updateActivity(activityId, updateFields);
+    const oA = await Activity.getActivityById(activityId);
+    if(oA.id){
+      const uA = await Activity.updateActivity(activityId, updateFields);
       res.send({activity: uA})
     }else{
       next({
@@ -76,12 +72,12 @@ actRouter.patch("/:activityId", authRequired, async (req, res, next) => {
 // //public routines which feature that activty
 actRouter.get("/:activityId/routines", async (req, res, next) => {
   const { activityId } = req.params;
-    
+    console.log(activityId);
   try{
-    const rB = await getPublicRoutinesByActivity(activityId);
+    const rB = await Routine.getPublicRoutinesByActivity(activityId);
     console.log(activityId);
     if (rB) {
-      res.send({ routines: rB });
+      res.send({routines:rB});
     } else {
       next({
         name: "there isn't any routines",

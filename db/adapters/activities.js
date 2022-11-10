@@ -1,7 +1,7 @@
 const { client } = require("../client");
 
-const getActivityById = async ({ id }) => {
-  const { rows: gabi } = await client.query(
+const getActivityById = async (id) => {
+  const { rows: [gabi] } = await client.query(
     `
   SELECT * FROM activities
   WHERE id=$1
@@ -11,19 +11,22 @@ const getActivityById = async ({ id }) => {
   return gabi;
 };
 
+
 const getAllActivities = async () => {
   try {
-    const { rows: allActivites } = await client.query(
+    const {rows} = await client.query(
       `
-      SELECT * FROM activities`
+      SELECT * FROM activities
+      ORDER BY activities.id
+      `
     );
-    return allActivites;
+    return rows;
   } catch (error) {
     throw error;
   }
 };
 
-const createActivites = async ({ name, description }) => {
+const createActivities = async ({ name, description }) => {
   const {
     rows: [activity],
   } = await client.query(
@@ -66,7 +69,7 @@ const updateActivity = async (activity_id, fields) => {
 };
 
 module.exports = {
-  createActivites,
+  createActivities,
   getActivityById,
   getAllActivities,
   updateActivity,
