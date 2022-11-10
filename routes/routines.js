@@ -2,19 +2,13 @@ const bcrypt = require("bcrypt");
 const { JWT_SECRET } = process.env;
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const {
-  getAllPublicRoutines,
-  createRoutine,
-  getRoutineById,
-  updateRoutine,
-} = require("../db/adapters/routines");
-const { testRoutines } = require("../db/seedData");
+const {Routine} = require("../db/adapters/index");
 const { authRequired } = require("./utils");
 const routinesRouter = express.Router();
 
 routinesRouter.get("/", async (req, res, next) => {
   try {
-    const all = await getAllPublicRoutines();
+    const all = await Routine.getAllPublicRoutines();
     res.send(all);
   } catch (error) {
     next(error);
@@ -22,56 +16,87 @@ routinesRouter.get("/", async (req, res, next) => {
 });
 
 routinesRouter.post("/", authRequired, async (req, res, next) => {
-  try {
+  try{
     const { is_public, name, goal } = req.body;
     const { id } = req.user;
-    const testRoutines = {
+    //my data = mD = my routine data so a new one
+    const mD = {
       creator_id: id,
       is_public,
       name,
       goal,
     };
-
-    const pR = await createRoutine(testRoutines);
-    if (pR) {
-      res.send({ pR });
-    } else {
-      res.status(400);
-      next({ message: "Error!" });
+    const theRoutines = await Routine.createRoutine(mD);
+    if(mD){
+      res.send({mD});
+    }else{
+      res.status(400)
+      next({message:"NOT ABLE TO MAKE ROUTINE"})
     }
-  } catch ({ message }) {
-    next({ message });
+  }catch({message}){
+    next({message});
   }
 });
 
-routinesRouter.patch("/:routineId", async (req, res, next) => {});
+//what we will update
+routinesRouter.patch("/:routineId", async (req, res, next) => {
+  const{routineId} = req.params;
+  const{is_public, name , goal} = req.body;
+  const updateFields = {};
 
-// routinesRouter.delete("/routineId", authRequired, async (req, res, next) => {
-//   try {
-//     const deleteP = await getRoutineById(req.params.routineId);
+  if(is_public){
+    updateFields.is_public = is_public;
+  }
 
-//     if (deleteP && deleteP.creator_id === req.user.id) {
-//       const updatedR = await updateRoutine(routine.id, {
-//         is_public: false,
-//       });
+  if(name){
+    updateFields.name = name;
+  }
 
-//       res.send(updateR);
-//     } else {
-//       next(
-//         deleteP
-//           ? {
-//               name: "UnauthorizedUserError",
-//               message: "You cannot delete a routine which is not yours",
-//             }
-//           : {
-//               name: "RoutinetNotFoundError",
-//               message: "This routine does not exist",
-//             }
-//       );
-//     }
-//   } catch ({ name, message }) {
-//     next({ name, message });
-//   }
-// });
+  if(goal){
+    updateFields.goal = goal;
+  }
+  try{
+    const oR = await Routine.getRoutineById(routineId);
+      if(oR.creator_id === req.user.id){
+        const uR = await Routine.updateRoutine(routineId, updateFields);
+        res.send({routine: uR})
+      }else{
+        next({
+          name: "UNAUTH",
+          message:"YOU CAN UPDATE THIS ONE BECAUSE ITS NOT YOUR OR PLEASE CREATE OR REGISTER AN ACCOUNT"
+        })
+      }
+    }catch({name,message}){
+      next({name, message})
+    }
+});
+
+routinesRouter.delete("/routineId", authRequired, async (req, res, next) => {
+  try {
+    const deleteP = await getRoutineById(req.params.routineId);
+
+    if (deleteP && deleteP.creator_id === req.user.id) {
+      const updatedR = await updateRoutine(routine.id, {
+        is_public: false,
+      });
+
+      res.send(updateR);
+    } else {
+      next(
+        deleteP
+          ? {
+              name: "UnauthorizedUserError",
+              message: "You cannot delete a routine which is not yours",
+            }
+          : {
+              name: "RoutinetNotFoundError",
+              message: "This routine does not exist",
+            }
+      );
+    }
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
 
 module.exports = routinesRouter;

@@ -40,7 +40,7 @@ actRouter.post("/", authRequired, async (req, res, next) => {
   }
 });
 
-actRouter.patch("/:activityId", async (req, res, next) => {
+actRouter.patch("/:activityId", authRequired, async (req, res, next) => {
   const { activityId } = req.params;
   const { name, description } = req.body;
   const updateFields = {};

@@ -1,6 +1,6 @@
 const { client } = require("../client");
 //routine by ID
-const getRoutineById = async (id) => {
+const getRoutineById = async (routine_id) => {
   //grab routine which matches id of matching activities
   try {
     const {
@@ -19,16 +19,17 @@ const getRoutineById = async (id) => {
          )
         ) END AS activities
                 FROM routines
-   
                 LEFT JOIN routine_activities AS ra
          ON routines.id = ra."routine_id"
         LEFT JOIN activities 
         ON ra."activity_id" = activities.id
         JOIN users
          ON routines."creator_id" = users.id	
-        WHERE routines.id=${id}
+        WHERE routines.id = $1
         GROUP BY routines.id, ra."routine_id", users.username
-    `);
+    `
+    [routine_id]
+    );
     return routine;
   } catch (error) {
     throw error;

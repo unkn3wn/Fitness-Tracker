@@ -183,9 +183,8 @@ const seedRoutines = async () => {
 const seedActivities = async () => {
 //seeding activities
   console.log("getting activities by Id");
-      for (const gabi of testActivities) {
-        await getActivityById(gabi);
-      }
+      const h1 =  getActivityById(1);
+      console.log("result:", h1);
 //creating activities
   console.log("making activities");
        for (const activity of testActivities) {
