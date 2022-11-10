@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const { JWT_SECRET } = process.env;
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const {Routine} = require("../db/adapters/index");
+const { Routine } = require("../db/adapters/index");
 const { authRequired } = require("./utils");
 const routinesRouter = express.Router();
 
@@ -16,7 +16,7 @@ routinesRouter.get("/", async (req, res, next) => {
 });
 
 routinesRouter.post("/", authRequired, async (req, res, next) => {
-  try{
+  try {
     const { is_public, name, goal } = req.body;
     const { id } = req.user;
     //my data = mD = my routine data so a new one
@@ -27,53 +27,55 @@ routinesRouter.post("/", authRequired, async (req, res, next) => {
       goal,
     };
     const theRoutines = await Routine.createRoutine(mD);
-    if(mD){
-      res.send({mD});
-    }else{
-      res.status(400)
-      next({message:"NOT ABLE TO MAKE ROUTINE"})
+    if (mD) {
+      res.send({ mD });
+    } else {
+      res.status(400);
+      next({ message: "NOT ABLE TO MAKE ROUTINE" });
     }
-  }catch({message}){
-    next({message});
+  } catch ({ message }) {
+    next({ message });
   }
 });
 
 //what we will update
-routinesRouter.patch("/:routineId", async (req, res, next) => {
-  const{routineId} = req.params;
-  const{is_public, name , goal} = req.body;
+routinesRouter.patch("/:routineId", authRequired, async (req, res, next) => {
+  const { routineId } = req.params;
+  const { is_public, name, goal } = req.body;
   const updateFields = {};
 
-  if(is_public){
+  if (is_public) {
     updateFields.is_public = is_public;
   }
 
-  if(name){
+  if (name) {
     updateFields.name = name;
   }
 
-  if(goal){
+  if (goal) {
     updateFields.goal = goal;
   }
-  try{
+  try {
     const oR = await Routine.getRoutineById(routineId);
-      if(oR.creator_id === req.user.id){
-        const uR = await Routine.updateRoutine(routineId, updateFields);
-        res.send({routine: uR})
-      }else{
-        next({
-          name: "UNAUTH",
-          message:"YOU CAN UPDATE THIS ONE BECAUSE ITS NOT YOUR OR PLEASE CREATE OR REGISTER AN ACCOUNT"
-        })
-      }
-    }catch({name,message}){
-      next({name, message})
+    console.log(oR);
+    if (oR.creator_id === req.user.id) {
+      const uR = await Routine.updateRoutine(routineId, updateFields);
+      res.send({ routine: uR });
+    } else {
+      next({
+        name: "UNAUTH",
+        message:
+          "YOU CAN UPDATE THIS ONE BECAUSE ITS NOT YOUR OR PLEASE CREATE OR REGISTER AN ACCOUNT",
+      });
     }
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
 });
 
 routinesRouter.delete("/routineId", authRequired, async (req, res, next) => {
   try {
-    const deleteP = await getRoutineById(req.params.routineId);
+    const deleteP = await Routine.getRoutineById(req.params.routineId);
 
     if (deleteP && deleteP.creator_id === req.user.id) {
       const updatedR = await updateRoutine(routine.id, {

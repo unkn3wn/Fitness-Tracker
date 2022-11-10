@@ -25,11 +25,9 @@ const getRoutineById = async (routine_id) => {
         ON ra."activity_id" = activities.id
         JOIN users
          ON routines."creator_id" = users.id	
-        WHERE routines.id = $1
+        WHERE routines.id ='${routine_id}'
         GROUP BY routines.id, ra."routine_id", users.username
-    `
-    [routine_id]
-    );
+    `);
     return routine;
   } catch (error) {
     throw error;
@@ -176,7 +174,7 @@ const getPublicRoutinesByUser = async (username) => {
 //select and retunr an array of public routines whihc hace a specific activy_iud intheir routine_activites join, inlucde their activites(use join)
 const getPublicRoutinesByActivity = async (activityId) => {
   try {
-    const {rows} = await client.query(`
+    const { rows } = await client.query(`
     SELECT routines.*,  users.username AS "creatorName",                    
     CASE WHEN ra."routine_id" is NULL THEN'[]'::json
     ELSE
@@ -206,7 +204,7 @@ const getPublicRoutinesByActivity = async (activityId) => {
 };
 //getting routine by id//should be NUmber 8
 const createRoutine = async ({ creator_id, is_public, name, goal }) => {
-  try{
+  try {
     const {
       rows: [rou],
     } = await client.query(
@@ -218,7 +216,7 @@ const createRoutine = async ({ creator_id, is_public, name, goal }) => {
       [creator_id, is_public, name, goal]
     );
     return rou;
-  }catch(error){
+  } catch (error) {
     throw error;
   }
 };
@@ -251,17 +249,19 @@ const updateRoutine = async (routines_id, fields) => {
 };
 
 //deleting routines
-const destroyRoutine = async (routineId) => {
-  const {
-    rows: [dR],
-  } = await client.query(
-    `
+const destroyRoutine = async (routine_id) => {
+  try {
+    const { rows } = await client.query(
+      `
     DELETE FROM routines 
-      WHERE routine.Id = ${id}
+      WHERE routine.Id = ${routine_id}
       RETURNING *;
    `
-  );
-  return dR;
+    );
+    return rows;
+  } catch (error) {
+    throw error;
+  }
 };
 
 module.exports = {
