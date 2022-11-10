@@ -258,7 +258,7 @@ const destroyRoutine = async (routine_id) => {
       RETURNING *;
    `
     );
-    return rows;
+    return {rows};
   } catch (error) {
     throw error;
   }
