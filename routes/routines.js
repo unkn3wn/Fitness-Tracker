@@ -73,29 +73,33 @@ routinesRouter.patch("/:routineId", authRequired, async (req, res, next) => {
   }
 });
 
-routinesRouter.delete("/routineId", authRequired, async (req, res, next) => {
- try{
-  const routi = await Routine.getRoutineById(req.params.routineId);
-  if(routi && Routine.creator_id === req.user.id){
-    const uR = await Routine.updateRoutine(routine.id, {active: false});
-    res.send({routine:uR});
-  }else{
-    next(
-      routine
-      ?{
-          name:"UNAUTH",
-          message:"NOT ABLE TO DELETE"
-      }
-      :{
-        name:"ROUT NOT FOUND",
-        message:"NOT ABLE TO FIND"
-      }
-    )
-  }
+routinesRouter.delete("/:routineId", authRequired, async (req, res, next) => {
+  console.log("made to delete");
+  try {
+    const { routineId } = req.params;
+    console.log(routineId);
 
- }catch({name,message}){
-  next({name,message})
- }
+    const routi = await Routine.getRoutineById(req.params.routineId);
+    console.log(routi);
+    if (routi && routi.creator_id === req.user.id) {
+      const uR = await Routine.destroyRoutine(routi.id);
+      res.send({ routine: uR });
+    } else {
+      next(
+        routine
+          ? {
+              name: "UNAUTH",
+              message: "NOT ABLE TO DELETE",
+            }
+          : {
+              name: "ROUT NOT FOUND",
+              message: "NOT ABLE TO FIND",
+            }
+      );
+    }
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
 });
 
 module.exports = routinesRouter;
