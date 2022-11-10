@@ -16,7 +16,7 @@ routineActivitiesRouter.post("/", async (req, res, next) => {
   try {
     const rA = await addActivityToRoutine(req.body);
     if (rA) {
-      res.send({ rA });
+      res.send(rA);
     } else {
       res.status(400);
       next({ message: "Routine activity causing error" });
@@ -66,29 +66,29 @@ routineActivitiesRouter.delete(
   authRequired,
   async (req, res, next) => {
     try {
-      const { routineActivityId } = req.params;
-      const routine = await getRoutineActivtyByid(routine);
-      const oR = await getRoutineById(routineActivityId.routine_id);
-      if (oR.creator_id === req.user.id) {
-        destroyRoutineActivity(routineActivityId);
-        res.send({ Deleted: routine });
-      } else {
-        next(
-          routine
-            ? {
-                name: "User error Unauthorized",
-                message: "You cannot delete routine_activity through this user",
-              }
-            : {
-                name: "Error, routine_activity not found",
-                message: "Routine_activity does not exist",
-              }
-        );
+      const dRa = await getRoutineActivtyByid(req.params.routineActivityId);
+      console.log(dRa);
+      const rO = await getRoutineById(dRa.routine_id);
+      if(dRa && rO.creator_id === req.user.id){
+        destroyRoutineActivity(req.params.routineActivityId)
+        res.send({Deleted: dRa})
+      }else{
+        next(routine 
+          ?{
+            name:"NOT AUTH", 
+            message:"cant edit post", 
+           }
+          :{
+            name:"NOT FOUND",
+            message:"CANT DELETE POST THAT DOESNT EXIT "
+           }
+          );
       }
-    } catch ({ message, name }) {
-      next({ name, message });
+
+    }catch({name, message}){
+      next({name, message})
     }
-  }
-);
+
+  });
 
 module.exports = routineActivitiesRouter;

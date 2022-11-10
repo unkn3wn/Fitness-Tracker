@@ -26,9 +26,9 @@ routinesRouter.post("/", authRequired, async (req, res, next) => {
       name,
       goal,
     };
-    const theRoutines = await Routine.createRoutine(mD);
-    if (mD) {
-      res.send({ mD });
+    const theRoutine = await Routine.createRoutine(mD);
+    if (theRoutine) {
+      res.send(theRoutine);
     } else {
       res.status(400);
       next({ message: "NOT ABLE TO MAKE ROUTINE" });

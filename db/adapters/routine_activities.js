@@ -67,14 +67,14 @@ const updateRoutineActivity = async (ura, fields) => {
 //destroying routine activities remove routine_activty from DB
 const destroyRoutineActivity = async (id) => {
   try {
-    const {
-      rows: [DRA],
-    } = await client.query(`
-    DELETE FROM routine_activities 
-      WHERE routine_activities.id = ${id}
-        RETURNING *;
-  `);
-    return DRA;
+    const { rows } = await client.query(
+      `
+    DELETE FROM routine_activities
+      WHERE routine_activities.id = '${id}'
+      RETURNING *;
+   `
+    );
+    return { rows };
   } catch (error) {
     throw error;
   }
