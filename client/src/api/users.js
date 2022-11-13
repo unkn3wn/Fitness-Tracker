@@ -1,6 +1,6 @@
-export async function registerUser(username, password){
+export default async function registerUser(username, password){
   const response = await fetch(
-    "routes/users/register",
+    "/routes/users/register",
     {
       method:"POST",
       headers:{
@@ -20,7 +20,7 @@ export async function registerUser(username, password){
 
 export async function loginUser(username, password){
   const response = await fetch(
-    "routes/users/login",
+    "/routes/users/login",
     {
       method:"POST",
       headers:{
@@ -40,7 +40,7 @@ export async function loginUser(username, password){
 
 export async function me(){
   const response = await fetch(
-    "routes/users/me",
+    "/routes/users/me",
     {
       headers:{
         "Content-Type":"application/json",
@@ -52,7 +52,7 @@ export async function me(){
 
 export async function logoutUser(username, password){
   const response = await fetch(
-    "routes/users/logout",
+    "/routes/users/logout",
     {
       method:"POST",
       headers:{

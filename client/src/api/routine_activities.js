@@ -1,43 +1,38 @@
-export default async function allActivities(){
+export async function allRoutineActivities(){
     const response = await fetch(
-        "/routes/activities",
-        
+        "/routes/routine_activities"
     )
     const result = await response.json();
-        return result;
+    return result;
+}
 
-};
-
-export async function createActivities(name, description){
+export async function createRoutineActivities(routine_id, activity_Id){
     const response = await fetch(
-        "/routes/activites",
+        "/routes/routine_activities",
         {
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
             },
             body: JSON.stringify({
-                name,
-                description
+
             })
         }
     )
-    const result = await response.json();
-    return result;
 }
 
-export async function updateActivites(id, name, description){
+export async function updateRoutineActivity(id, duration, count){
     const response = await fetch(
-        `/routes/activites/${id}`,
+        `/routes/routine_activities/${id}`,
         {
             method:"PATCH",
             headers:{
                 "Content-Type":"application/json"
-            },
-            body:JSON.stringify({
-                name, 
-                description
-            }),
+        },
+            body: JSON.stringify({
+                count,
+                duration
+            })
         });
         const result = await response.json();
         return result;

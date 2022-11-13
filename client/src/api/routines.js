@@ -1,7 +1,8 @@
-export async function allRoutines(){
+export default  async function allRoutines(){
     const response = await fetch(
-        "routes/routines"
+        "/routes/routines"
     )
+    console.log("hello")
     const result = await response.json();
     return result;
 }
@@ -29,6 +30,7 @@ export async function singleRoutine(id){
   const response = await fetch(
     `routes/routines/${id}`
   )
+
   const result = await response.json();
   return result;
 
