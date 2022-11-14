@@ -8,6 +8,14 @@ export default async function allActivities(){
 
 };
 
+export async function routineById(activityId){
+    const response = await fetch(
+        `/routes/activities/${activityId}`
+    )
+    const result = await response.json();
+    return result;
+}
+
 export async function createActivities(name, description){
     const response = await fetch(
         "/routes/activites",

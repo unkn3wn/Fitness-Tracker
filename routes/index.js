@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const actRouter = require("./activities")
+
 router.get("/health", (req, res, next) => {
   res.send("HEALTH PASSED");
 });

@@ -1,13 +1,12 @@
-import {UseUser} from "../hooks/UseUser"
 import {useState} from "react";
 import registerUser from "../api/users"
-import {useNavigate} from "react"
+
 
 export default function Register(){
 
     const [username,setUsername] = useState("");
     const [password,setPassword] = useState("");
-    const {loggedIn,setLoggedIn} = UseUser();
+ 
 
     return(
         <div>
@@ -19,9 +18,9 @@ export default function Register(){
                     const result = await registerUser(username, password);
                     console.log("register", result);
                     if(result){
-                        
                         setUsername("");
                         setPassword("")
+                        
                         console.log("you are ", result)
                     }else{
                         console.log("Error in registering the user")
@@ -48,7 +47,6 @@ export default function Register(){
                 />
 
                 <button>Submit</button>
-
             </form>
             </div>
     

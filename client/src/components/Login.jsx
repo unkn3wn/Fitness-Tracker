@@ -1,4 +1,3 @@
-import {UseUser} from "../hooks/UseUser"
 import {useState} from "react";
 import loginUser from "../api/users"
 
@@ -6,8 +5,6 @@ function TheLogin(){
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    // const [loggedIn, setLoggedIn] = UseUser();
-
     return(
         <div>
             <h1>LOGIN IN</h1>
