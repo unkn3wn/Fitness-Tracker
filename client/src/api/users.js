@@ -1,4 +1,4 @@
-export default async function registerUser(username, password) {
+export async function registerUser(username, password) {
   try {
     const response = await fetch("/routes/users/register", {
       method: "POST",

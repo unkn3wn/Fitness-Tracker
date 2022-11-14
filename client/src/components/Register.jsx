@@ -1,55 +1,45 @@
-import {useState} from "react";
-import registerUser from "../api/users"
+import { useState } from "react";
+import { registerUser } from "../api/users";
 
+export default function Register() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-export default function Register(){
+  return (
+    <div>
+      <h1>REGISTER</h1>
+      <form
+        onSubmit={async (event) => {
+          event.preventDefault();
 
-    const [username,setUsername] = useState("");
-    const [password,setPassword] = useState("");
- 
+          const result = await registerUser(username, password);
+          console.log("register", result);
+          if (result) {
+            setUsername("");
+            setPassword("");
 
-    return(
-        <div>
-           <h1>REGISTER</h1>
-            <form
-                onSubmit={async(event)=>{
-                    event.preventDefault();
-                    
-                    const result = await registerUser(username, password);
-                    console.log("register", result);
-                    if(result){
-                        setUsername("");
-                        setPassword("")
-                        
-                        console.log("you are ", result)
-                    }else{
-                        console.log("Error in registering the user")
-                    }
-                    
-                }}
-            >
-                {/* 2 inputs and submit. one for username and password */}
-                {/* value = username/ password*/}
-                <input 
-                    value={username}
-                    onChange={(event)=>setUsername(
-                        event.target.value
-                    )}
-                    placeholder="Enter a UserName"
-                />
+            console.log("you are ", result);
+          } else {
+            console.log("Error in registering the user");
+          }
+        }}
+      >
+        {/* 2 inputs and submit. one for username and password */}
+        {/* value = username/ password*/}
+        <input
+          value={username}
+          onChange={(event) => setUsername(event.target.value)}
+          placeholder="Enter a UserName"
+        />
 
-                <input
-                    value={password}
-                    onChange={(event)=>setPassword(
-                        event.target.value
-                    )}
-                    placeholder= "enter your password"
-                />
+        <input
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          placeholder="enter your password"
+        />
 
-                <button>Submit</button>
-            </form>
-            </div>
-    
-    )
+        <button>Submit</button>
+      </form>
+    </div>
+  );
 }
-
