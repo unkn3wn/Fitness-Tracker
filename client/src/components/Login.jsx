@@ -34,7 +34,9 @@ function TheLogin() {
           placeholder="Enter Your Password"
         />
 
-        <button>Submit</button>
+        <button onClick={()=>{
+          console.log({username})
+        }}>Submit</button>
       </form>
     </div>
   );

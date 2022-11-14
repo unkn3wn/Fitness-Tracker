@@ -10,6 +10,8 @@ import CreateRoutine from "./components/CreateRoutine"
 import ActivityDetail from "./components/ActivityDetail"
 
 
+
+
 function App() {
   return(
     <div>
@@ -25,6 +27,7 @@ function App() {
             <Route path = "/routes/routines" element={<AppsRoutines/>}/>
             <Route path = "/route/routines/create" element={<CreateRoutine/>}/>
             <Route path = "routes/routines/:routineId" element={<ActivityDetail/>}/>
+            
 
         {/* auth routes */}
             <Route path = "/routes/users/register" element={<Register/>}/>

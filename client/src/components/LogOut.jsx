@@ -1,7 +1,19 @@
-import { useState } from "react";
 import { logoutUser } from "../api/users";
+import { useNavigate } from "react-router-dom";
 
-function TheLogin() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+export default function TheLogout({username, password}) {
+  const nav = useNavigate();
+
+  return (
+    <button
+      onClick={() => {
+        logoutUser();
+        nav("/");
+        console.log({username})
+        console.log(password)
+      }}
+    >
+      Log Out
+    </button>
+  );
 }

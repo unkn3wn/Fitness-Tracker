@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { registerUser } from "../api/users";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const nav = useNavigate();
 
   return (
     <div>
@@ -38,7 +40,13 @@ export default function Register() {
           placeholder="enter your password"
         />
 
-        <button>Submit</button>
+        <button
+          onClick={() => {
+           
+            nav("/routes/users/login");
+          
+          }}
+        >Submit</button>
       </form>
     </div>
   );

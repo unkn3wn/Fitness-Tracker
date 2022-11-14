@@ -26,7 +26,7 @@ export async function createRoutine(is_public, name, goal){
         
 }
 
-export async function singleRoutine(id){
+export async function singleRoutine(routineid){
   const response = await fetch(
     `routes/routines/${id}`
   )
