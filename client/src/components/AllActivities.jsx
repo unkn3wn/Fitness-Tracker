@@ -20,7 +20,7 @@ function AppsActivities (){
         <div>
             {activities.map((activ)=>{
                 return(
-                    <div key={activ._id}>
+                    <div key={activ.id}>
                         <h3></h3>
                         <h4>WORK OUT: {activ.name}</h4>
                         <h5>DESCRIPTION: {activ.description}</h5>

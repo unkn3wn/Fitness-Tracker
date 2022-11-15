@@ -4,6 +4,7 @@ import allRoutines from "../api/routines"
 import RoutineNavBar from "../navs/CreateRoutineNav"
 import {useNavigate} from "react-router-dom"
 
+
 function AppsRoutines(){
     const navigate = useNavigate();
     const [routines, setRoutines] = useState([]);
@@ -22,12 +23,12 @@ function AppsRoutines(){
           <RoutineNavBar/>
             {routines.map((routines)=>{
                 return(
-                    <div key={routines._id}>
+                    <div key={routines.id}>
                         <h3>{routines.name}</h3>
                         <h3>{routines.goal}</h3>
                         <button 
                         onClick={()=>{
-                          navigate(`routes/routines/${id}`)
+                          navigate(`/routes/routines/${routines.id}`)
                         }}
                         >See details</button>
                     </div>
