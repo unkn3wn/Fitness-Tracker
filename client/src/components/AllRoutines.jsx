@@ -1,4 +1,3 @@
-import react from "react";
 import {useState, useEffect} from "react"
 import allRoutines from "../api/routines"
 import RoutineNavBar from "../navs/CreateRoutineNav"
@@ -21,14 +20,14 @@ function AppsRoutines(){
         
         <div>
           <RoutineNavBar/>
-            {routines.map((routines)=>{
+            {routines.map((routi)=>{
                 return(
-                    <div key={routines.id}>
-                        <h3>{routines.name}</h3>
-                        <h3>{routines.goal}</h3>
+                    <div key={routi.id}>
+                        <h3>{routi.name}</h3>
+                        <h3>{routi.goal}</h3>
                         <button 
                         onClick={()=>{
-                          navigate(`/routes/routines/${routines.id}`)
+                          navigate(`/routines/${routi.id}`)
                         }}
                         >See details</button>
                     </div>

@@ -19,21 +19,18 @@ function App() {
         <Route path="/" element={<Home />} />
 
         {/* activity routes */}
-        <Route path="/routes/activites" element={<AllTheActivities />} />
-        <Route
-          path="/routes/activites/:activityId"
-          element={<ActivityDetail />}
-        />
+        <Route path="/activities" element={<AllTheActivities />} />
+        <Route path="/activities/:activityId" element={<ActivityDetail />}/>
 
         {/* routine routes */}
-        <Route path="/routes/routines" element={<AppsRoutines />} />
-        <Route path="/routes/routines/create" element={<CreateRoutine />} />
+        <Route path="/routines" element={<AppsRoutines />} />
+        <Route path="/routines/create" element={<CreateRoutine />} />
         {/* <Route path="routes/routines//:routineId" element={<RoutineDetail/>}/> */}
-        <Route path="/routes/routines/:routineId" element={<RoutineDetail />} />
+        <Route path="/routines/:routineId" element={<RoutineDetail />} />
 
         {/* auth routes */}
-        <Route path="/routes/users/register" element={<Register />} />
-        <Route path="/routes/users/login" element={<TheLogin />} />
+        <Route path="/users/register" element={<Register />} />
+        <Route path="/users/login" element={<TheLogin />} />
       </Routes>
     </div>
   );

@@ -5,8 +5,8 @@ function NavBar() {
   return (
     <nav>
       <Link to="/">Home</Link>
-      <Link to="/routes/activites">Activties </Link>
-      <Link to="/routes/routines">Routines</Link>
+      <Link to="/activities">Activties </Link>
+      <Link to="/routines">Routines</Link>
       {/* switch logout to the button so immport button function */}
       <TheLogout/>
     </nav>

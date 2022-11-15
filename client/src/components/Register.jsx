@@ -41,11 +41,7 @@ export default function Register() {
         />
 
         <button
-          onClick={() => {
-           
-            nav("/routes/users/login");
           
-          }}
         >Submit</button>
       </form>
     </div>

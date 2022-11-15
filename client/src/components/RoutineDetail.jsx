@@ -4,12 +4,12 @@ import { singleRoutine } from "../api/routines";
 
 
 function RoutineDetail() {
-  const { id } = useParams();
+  const { routineId } = useParams();
   const [detial, setDetail] = useState({});
 
   useEffect(() => {
     async function loadRoutines() {
-      const result = await singleRoutine(id);
+      const result = await singleRoutine(routineId);
       setDetail(result);
     }
     loadRoutines();

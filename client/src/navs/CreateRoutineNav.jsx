@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 function RoutineNavBar(){
     return(
         <nav>
-            <Link to="/route/routines/create">Create A Routine</Link>
+            <Link to="/routines/create">Create A Routine</Link>
         </nav>
     )
 }

@@ -5,7 +5,7 @@ export default async function allActivities() {
 }
 
 export async function activityById(activityId) {
-  const response = await fetch(``);
+  const response = await fetch(`/routes/activities/${activityId}`);
   const result = await response.json();
   return result;
 }
@@ -26,7 +26,7 @@ export async function createActivities(name, description) {
 }
 
 export async function updateActivites(id, name, description) {
-  const response = await fetch(`/routes/activites/${id}`, {
+  const response = await fetch(`/routes/activities/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
