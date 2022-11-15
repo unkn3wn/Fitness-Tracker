@@ -1,5 +1,4 @@
 const { client } = require("../client");
-
 //getting routine by id pass routine id
 const getRoutineActivtyByid = async (id) => {
   try {

@@ -7,7 +7,8 @@ export default defineConfig({
   server:{
     proxy:{
       '/routes':{
-        target:"http://localhost:8495/"
+        target:"http://localhost:8495/",
+        
       }
     }
   }
