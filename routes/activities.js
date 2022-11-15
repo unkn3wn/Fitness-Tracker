@@ -4,9 +4,10 @@ const { JWT_SECRET } = process.env;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const {Activity, Routine} = require("../db/adapters/index")
+const { Activity, Routine } = require("../db/adapters/index");
 
 const { authRequired } = require("./utils");
+const { getActivityById } = require("../db/adapters/activities");
 const actRouter = express.Router();
 
 //getting all activities
@@ -20,6 +21,16 @@ actRouter.get("/", async (req, res, next) => {
     next(error);
   }
 });
+
+actRouter.get("/:activityId", async(req,res,next)=>{
+  const {activityId} = req.params;
+  try{
+    const oneActivity = await Activity.getActivityById(activityId);
+    res.send(oneActivity);
+  }catch(error){
+    next(error);
+  }
+} )
 
 //creating a new activity so we use the authRequired
 
@@ -52,40 +63,38 @@ actRouter.patch("/:activityId", authRequired, async (req, res, next) => {
     updateFields.description = description;
   }
 
-  try{
+  try {
     const oA = await Activity.getActivityById(activityId);
-    if(oA.id){
+    if (oA.id) {
       const uA = await Activity.updateActivity(activityId, updateFields);
-      res.send({activity: uA})
-    }else{
+      res.send({ activity: uA });
+    } else {
       next({
-        name:"not auth",
-        message:"cannt update activity that is not yours",
+        name: "not auth",
+        message: "cannt update activity that is not yours",
       });
     }
-  }catch(error){
+  } catch (error) {
     throw error;
   }
-
 });
 
 // //public routines which feature that activty
 actRouter.get("/:activityId/routines", async (req, res, next) => {
   const { activityId } = req.params;
-    console.log(activityId);
-  try{
+  try {
     const rB = await Routine.getPublicRoutinesByActivity(activityId);
-    console.log(activityId);
+
     if (rB) {
-      res.send({routines:rB});
+      res.send({ routines: rB });
     } else {
       next({
         name: "there isn't any routines",
         message: "there is no link with activity and routine",
       });
     }
-  }catch({name,message}){
-      next({name,message})
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 });
 

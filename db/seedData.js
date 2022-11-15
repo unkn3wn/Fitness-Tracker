@@ -40,7 +40,6 @@ const testActivities = [
     description:
       "Stand with your feet hip-width apart.Step out wide to the side while keeping your other foot flat.Bend your “stepping” knee while keeping the other knee straight. ...Forcefully push off from your foot to return to the starting position.",
   },
-
   {
     //triceps, chest
 
@@ -64,6 +63,8 @@ const testActivities = [
     description:
       "Curl, or clean a pair of dumbbells to shoulder level with your palms facing your body.Stand with your feet shoulder width apart, with your knees locked, glutes contracted. While keeping your low back straight, press the dumbbell overhead with your right hand by rotating your hand towards... Pull the weight down slow and controlled to the starting position with...",
   },
+
+  
 ];
 
 const testRoutineActivities = [

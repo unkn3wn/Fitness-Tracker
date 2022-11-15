@@ -1,20 +1,25 @@
 const { client } = require("../client");
 
-const getActivityById = async (id) => {
-  const { rows: [gabi] } = await client.query(
+const getActivityById = async (activityId) => {
+ try{
+  const {
+    rows: [gabi],
+  } = await client.query(
     `
   SELECT * FROM activities
-  WHERE id=$1
-  `,
-    [id]
+   WHERE activities.id=${activityId}
+  `
   );
+  
   return gabi;
+ }catch(error){
+  next(error);
+ }
 };
-
 
 const getAllActivities = async () => {
   try {
-    const {rows} = await client.query(
+    const { rows } = await client.query(
       `
       SELECT * FROM activities
       ORDER BY activities.id
@@ -39,9 +44,7 @@ const createActivities = async ({ name, description }) => {
   );
   return activity;
 };
-{
-  name: "a";
-}
+
 const updateActivity = async (activity_id, fields) => {
   const setString = Object.keys(fields)
     .map((key, index) => `"${key}"=$${index + 1}`)
