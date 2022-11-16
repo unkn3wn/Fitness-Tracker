@@ -11,7 +11,7 @@ export async function activityById(activityId) {
 }
 
 export async function createActivities(name, description) {
-  const response = await fetch("/routes/activites", {
+  const response = await fetch("/routes/activities", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -25,8 +25,8 @@ export async function createActivities(name, description) {
   return result;
 }
 
-export async function updateActivites(id, name, description) {
-  const response = await fetch(`/routes/activities/${id}`, {
+export async function updateActivites(activityId, name, description) {
+  const response = await fetch(`/routes/activities/${activityId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

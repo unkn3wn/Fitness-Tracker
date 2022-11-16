@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import allActivities from "../api/activities";
 import { useNavigate } from "react-router-dom";
+import ActivityNavBar from "../navs/ActivityNavs"
 
-function AppsActivities() {
+function AllActivities() {
   const nav = useNavigate();
   const [activities, setActivities] = useState([]);
 
@@ -16,7 +17,9 @@ function AppsActivities() {
  
   
   return (
+    
     <div>
+      <ActivityNavBar/>
       {activities.map((activ) => {
         return (
           <div key={activ.id}>
@@ -28,8 +31,14 @@ function AppsActivities() {
                 nav(`/activities/${activ.id}`);
               }}
             >
-              see Details
+              See Details
             </button>
+
+            <button
+            onClick={() => {
+            nav(`/changeactivity/${activ.id}`);
+          }}
+        >update activity</button>
           </div>
         );
       })}
@@ -37,4 +46,4 @@ function AppsActivities() {
   );
 }
 
-export default AppsActivities;
+export default AllActivities;

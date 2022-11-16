@@ -9,7 +9,7 @@ export default  async function allRoutines(){
 
 export async function createRoutine(is_public, name, goal){
     const response = await fetch(
-        "/routes/routines/",
+        "/routes/routines",
         {
             method:"POST",
             headers:{
@@ -36,9 +36,9 @@ export async function singleRoutine(routineId){
 
 }
 
-export async function updateRoutine(id, is_public, name, goal){
+export async function updateRoutine(routineId, is_public, name, goal){
    const response = await fetch(
-    `routes/routines/${id}`,
+    `/routes/routines/${routineId}`,
     {
         method:"PATCH",
         headers:{

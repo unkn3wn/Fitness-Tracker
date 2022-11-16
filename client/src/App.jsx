@@ -1,14 +1,22 @@
-//all my activities
+//react imports
 import { Routes, Route } from "react-router-dom";
-import Home from "./components/Homepage";
-import NavBar from "./navs/NavBar";
-import AllTheActivities from "./components/AllActivities";
-import AppsRoutines from "./components/AllRoutines";
+//import user stuff
 import Register from "./components/Register";
 import TheLogin from "./components/Login";
-import CreateRoutine from "./components/CreateRoutine";
-import RoutineDetail from "./components/RoutineDetail";
+//navs
+import Home from "./components/Homepage";
+import NavBar from "./navs/NavBar";
+//activities import
+import AllTheActivities from "./components/AllActivities";
 import ActivityDetail from "./components/ActivityDetail";
+import CreateActivity from "./components/CreateActivity";
+import UpdateActivity from "./components/UpdateActivity";
+
+//routines import 
+import AllRoutines from "./components/AllRoutines";
+import RoutineDetail from "./components/RoutineDetail";
+import CreateRoutine from "./components/CreateRoutine";
+import UpdateRoutines from "./components/UpdateRoutines";
 
 function App() {
   return (
@@ -20,12 +28,17 @@ function App() {
 
         {/* activity routes */}
         <Route path="/activities" element={<AllTheActivities />} />
-        <Route path="/activities/:activityId" element={<ActivityDetail />}/>
+        <Route path="/activities/:activityId" element={<ActivityDetail />} />
+        <Route path="/activities/create" element={<CreateActivity />} />
+        <Route
+          path="/changeactivity/:activityId"
+          element={<UpdateActivity />}
+        />
 
         {/* routine routes */}
-        <Route path="/routines" element={<AppsRoutines />} />
+        <Route path="/routines" element={<AllRoutines />} />
         <Route path="/routines/create" element={<CreateRoutine />} />
-        {/* <Route path="routes/routines//:routineId" element={<RoutineDetail/>}/> */}
+        <Route path="/changeroutine/:routineId" element={<UpdateRoutines />} />
         <Route path="/routines/:routineId" element={<RoutineDetail />} />
 
         {/* auth routes */}

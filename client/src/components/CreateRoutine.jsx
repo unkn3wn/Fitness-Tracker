@@ -6,52 +6,56 @@ function CreateRoutine() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [goal, setGoal] = useState("");
-  const [ublic, setUblic] = useState("");
+  const [is_public, setIs_Public] = useState("");
 
+  ///handleChange() = this allows to handle input change
   return (
     <div>
       <form
         onSubmit={async (e) => {
           e.preventDefault();
-          const result = await createRoutine(creator_id, is_public, name, goal);
-          navigate("/");
+          const result = await createRoutine(is_public, name, goal);
+          setName("");
+          setGoal("");
+          setIs_Public("");
+          console.log(result);
         }}
       >
+        <label>NAME:</label>
         <input
+          variant="standard"
           value={name}
+          type="text"
+          placeholder="name"
           onChange={(event) => {
             setName(event.target.value);
           }}
-          type="text"
-          placeholder="Date Of Routine"
         />
 
+        <label>GOAL:</label>
         <input
+          variant="standard"
           value={goal}
+          type="text"
+          placeholder="goal"
           onChange={(event) => {
             setGoal(event.target.value);
           }}
-          type="text"
-          placeholder="Goal for the Routine Day"
         />
 
         <label>
           <input
+            variant="standard"
             value={is_public}
+            type="text"
+            placeholder="true or false"
             onChange={(event) => {
-              setIs_public(event.taget.value);
+              setIs_Public(event.target.value);
             }}
-            type="checkbox"
           />
         </label>
-        <button
-          onClick={() => {
-            navigate("/");
-          }}
-        >
-          {" "}
-          Submit Routine
-        </button>
+
+        <button type="submit">Submit Routine</button>
       </form>
     </div>
   );

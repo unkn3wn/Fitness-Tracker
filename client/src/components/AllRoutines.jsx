@@ -1,11 +1,12 @@
+import react from "react";
 import {useState, useEffect} from "react"
 import allRoutines from "../api/routines"
-import RoutineNavBar from "../navs/CreateRoutineNav"
+import RoutineNavBar from "../navs/RoutineNavs"
 import {useNavigate} from "react-router-dom"
 
 
 function AppsRoutines(){
-    const navigate = useNavigate();
+    const nav = useNavigate();
     const [routines, setRoutines] = useState([]);
 
     useEffect(() => {
@@ -27,12 +28,20 @@ function AppsRoutines(){
                         <h3>{routi.goal}</h3>
                         <button 
                         onClick={()=>{
-                          navigate(`/routines/${routi.id}`)
+                          nav(`/routines/${routi.id}`)
                         }}
                         >See details</button>
+
+                        <button
+                          onClick={()=>{
+                            nav(`/changeroutine/${routi.id}`)
+                          }}
+                        >Update Routine</button>
                     </div>
                 )
             })}
+
+          
         </div>
       )
 
