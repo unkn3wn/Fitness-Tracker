@@ -15,15 +15,15 @@ routinesRouter.get("/", async (req, res, next) => {
   }
 });
 
-routinesRouter.get("/:routineId", async(req,res,next)=>{
-  const {routineId} = req.params;
-  try{
+routinesRouter.get("/:routineId", async (req, res, next) => {
+  const { routineId } = req.params;
+  try {
     const oneRoutine = await Routine.getRoutineById(routineId);
     res.send(oneRoutine);
-  }catch(error){
-    next(error)
+  } catch (error) {
+    next(error);
   }
-})
+});
 
 routinesRouter.post("/", authRequired, async (req, res, next) => {
   try {
@@ -82,8 +82,6 @@ routinesRouter.patch("/:routineId", authRequired, async (req, res, next) => {
     next({ name, message });
   }
 });
-
-
 
 routinesRouter.delete("/:routineId", authRequired, async (req, res, next) => {
   console.log("made to delete");

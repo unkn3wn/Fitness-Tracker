@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { singleRoutine } from "../api/routines";
-
+import DeleteRoutine from "../components/DeleteRoutine";
 
 function RoutineDetail() {
   const { routineId } = useParams();
@@ -13,16 +13,17 @@ function RoutineDetail() {
       setDetail(result);
     }
     loadRoutines();
-  },[]);
+  }, []);
 
-  return(
+  return (
     <div>
-        <div>
-            <h3>Day :{detial.name}</h3>
-            <h3>Part of Body To Work out :{detial.goal}</h3>
-        </div>
+      <div>
+        <h3>Day :{detial.name}</h3>
+        <h3>Part of Body To Work out :{detial.goal}</h3>
+      </div>
+      <DeleteRoutine />
     </div>
-  )
+  );
 }
 
 export default RoutineDetail;
