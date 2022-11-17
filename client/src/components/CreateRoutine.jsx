@@ -19,6 +19,7 @@ function CreateRoutine() {
           setGoal("");
           setIs_Public("");
           console.log(result);
+          navigate("/routines");
         }}
       >
         <label>NAME:</label>

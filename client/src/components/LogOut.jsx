@@ -1,7 +1,7 @@
 import { logoutUser } from "../api/users";
 import { useNavigate } from "react-router-dom";
 
-export default function TheLogout({username, password}) {
+export default function TheLogout({ username, password }) {
   const nav = useNavigate();
 
   return (
@@ -9,8 +9,9 @@ export default function TheLogout({username, password}) {
       onClick={() => {
         logoutUser();
         nav("/");
-        console.log({username})
-        console.log(password)
+        console.log({ username });
+        console.log(password);
+        nav("/");
       }}
     >
       Log Out

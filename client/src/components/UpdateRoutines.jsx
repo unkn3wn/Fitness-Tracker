@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { updateRoutine } from "../api/routines";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function UpdateRoutines() {
   const [is_public, setIs_Public] = useState([]);
   const [name, setName] = useState([]);
   const [goal, setGoal] = useState([]);
   const { routineId } = useParams();
+  const nav = useNavigate();
 
   return (
     <div>
@@ -17,6 +18,7 @@ function UpdateRoutines() {
           event.preventDefault();
           const result = await updateRoutine(routineId, is_public, name, goal);
           console.log(result);
+          nav(`/routines`);
         }}
       >
         <input
@@ -39,13 +41,13 @@ function UpdateRoutines() {
         />
 
         <input
-        vairant= "standard"
-        value= {goal}
-        type="text"
-        placeholder="new goal"
-        onChange={(event)=>{
+          vairant="standard"
+          value={goal}
+          type="text"
+          placeholder="new goal"
+          onChange={(event) => {
             setGoal(event.target.value);
-        }}
+          }}
         />
         <button type="submit">SUBMIT CHANGES</button>
       </form>

@@ -15,6 +15,7 @@ function CreateActivity() {
           setName("");
           setDescription("");
           console.log(result);
+          nav("/activities");
         }}
       >
         <label>NAME:</label>
@@ -45,5 +46,4 @@ function CreateActivity() {
   );
 }
 
-
-export default CreateActivity
+export default CreateActivity;

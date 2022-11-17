@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import allActivities from "../api/activities";
 import { useNavigate } from "react-router-dom";
-import ActivityNavBar from "../navs/ActivityNavs"
+import ActivityNavBar from "../navs/ActivityNavs";
 
 function AllActivities() {
   const nav = useNavigate();
@@ -14,12 +14,10 @@ function AllActivities() {
     }
     getAllActivities();
   }, []);
- 
-  
+
   return (
-    
     <div>
-      <ActivityNavBar/>
+      <ActivityNavBar />
       {activities.map((activ) => {
         return (
           <div key={activ.id}>
@@ -35,10 +33,12 @@ function AllActivities() {
             </button>
 
             <button
-            onClick={() => {
-            nav(`/changeactivity/${activ.id}`);
-          }}
-        >update activity</button>
+              onClick={() => {
+                nav(`/changeactivity/${activ.id}`);
+              }}
+            >
+              update activity
+            </button>
           </div>
         );
       })}

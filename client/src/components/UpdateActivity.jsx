@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { updateActivites } from "../api/activities";
-import {useParams} from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom";
 
 function UpdateActivity() {
   const [name, setName] = useState([]);
   const [description, setDescription] = useState([]);
-  const {activityId} = useParams();
-
+  const { activityId } = useParams();
+  const nav = useNavigate();
 
   return (
     <div>
@@ -14,8 +14,9 @@ function UpdateActivity() {
       <form
         onSubmit={async (event) => {
           event.preventDefault();
-          const result = await updateActivites(activityId,name, description);
+          const result = await updateActivites(activityId, name, description);
           console.log(result);
+          nav(`/activities/${activityId}`);
         }}
       >
         <input
@@ -38,9 +39,7 @@ function UpdateActivity() {
           }}
         />
 
-        <button 
-        type="submit"
-        >SUBMIT CHANGES</button>
+        <button type="submit">SUBMIT CHANGES</button>
       </form>
     </div>
   );
