@@ -256,7 +256,7 @@ const destroyRoutine = async (routine_id) => {
     const { rows } = await client.query(
       `
     DELETE FROM routines 
-      WHERE routine.Id = ${routine_id}
+      WHERE routines.Id = ${routine_id}
       RETURNING *;
    `
     );

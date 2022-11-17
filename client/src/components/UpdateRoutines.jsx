@@ -42,7 +42,7 @@ function UpdateRoutines() {
         vairant= "standard"
         value= {goal}
         type="text"
-        placeholder="idk"
+        placeholder="new goal"
         onChange={(event)=>{
             setGoal(event.target.value);
         }}

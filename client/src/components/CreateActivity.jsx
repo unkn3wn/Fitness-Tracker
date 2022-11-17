@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 function CreateActivity() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-
+  const nav = useNavigate();
   return (
     <div>
       <form

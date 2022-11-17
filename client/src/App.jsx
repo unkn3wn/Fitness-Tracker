@@ -12,7 +12,7 @@ import ActivityDetail from "./components/ActivityDetail";
 import CreateActivity from "./components/CreateActivity";
 import UpdateActivity from "./components/UpdateActivity";
 
-//routines import 
+//routines import
 import AllRoutines from "./components/AllRoutines";
 import RoutineDetail from "./components/RoutineDetail";
 import CreateRoutine from "./components/CreateRoutine";
@@ -40,7 +40,6 @@ function App() {
         <Route path="/routines/create" element={<CreateRoutine />} />
         <Route path="/changeroutine/:routineId" element={<UpdateRoutines />} />
         <Route path="/routines/:routineId" element={<RoutineDetail />} />
-
         {/* auth routes */}
         <Route path="/users/register" element={<Register />} />
         <Route path="/users/login" element={<TheLogin />} />

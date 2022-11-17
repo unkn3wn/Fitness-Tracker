@@ -54,9 +54,9 @@ export async function updateRoutine(routineId, is_public, name, goal){
     return result;
 }
 
-export async function deleteRoutine(id){
+export async function deleteRoutine(routineId){
     const response = await fetch(
-        `routes/routines/${id}`,
+        `/routes/routines/${routineId}`,
         {
             method:"DELETE",
             headers:{

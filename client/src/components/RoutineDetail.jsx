@@ -14,15 +14,18 @@ function RoutineDetail() {
     }
     loadRoutines();
   }, []);
-
+  console.log(detial);
   return (
     <div>
       <div>
+     
         <h3>Day :{detial.name}</h3>
         <h3>Part of Body To Work out :{detial.goal}</h3>
+        <DeleteRoutine />
       </div>
-      <DeleteRoutine />
+     
     </div>
+    
   );
 }
 
