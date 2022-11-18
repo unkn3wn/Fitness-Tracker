@@ -45,6 +45,7 @@ function TheLogin() {
           Submit
         </button>
       </form>
+      <h6>login with a registered account</h6>
     </div>
   );
 }

@@ -11,6 +11,10 @@ const {
 } = require("../db/adapters/routine_activities");
 const { authRequired } = require("./utils");
 const routineActivitiesRouter = express.Router();
+
+
+
+
 routineActivitiesRouter.post("/", async (req, res, next) => {
   try {
     const rA = await addActivityToRoutine(req.body);

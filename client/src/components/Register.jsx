@@ -13,6 +13,7 @@ export default function Register() {
       <form
         onSubmit={async (event) => {
           event.preventDefault();
+
           const result = await registerUser(username, password);
           console.log("register", result);
           nav("/users/login");
@@ -40,7 +41,9 @@ export default function Register() {
           placeholder="enter your password"
         />
 
-        <button>Submit</button>
+        <button onClick={()=>{
+          // nav("/users/login");
+        }}>Submit</button>
       </form>
     </div>
   );
