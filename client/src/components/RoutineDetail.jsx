@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 // my routine imports
 import { singleRoutine } from "../api/routines";
 import DeleteRoutine from "../components/DeleteRoutine";
@@ -8,6 +8,7 @@ import { allRoutineActivities, createRoutineActivities } from "../api/routine_ac
 import allActivities from "../api/activities";
 
 function RoutineDetail() {
+  const nav = useNavigate();
   const { routineId } = useParams();
   const [detial, setDetail] = useState({});
   const [activities, setActivities] = useState([]);
@@ -16,28 +17,39 @@ function RoutineDetail() {
 
   useEffect(() => {
     async function loadRoutines() {
-      const result = await singleRoutine(routineId);
-      setDetail(result);
+      const routine = await singleRoutine(routineId);
+      setDetail(routine);
     }
     loadRoutines();
   }, []);
   console.log(detial);
+
+  useEffect(() => {
+    async function getAllActivities() {
+      const aActiv = await allActivities();
+      setActivities(aActiv);
+    }
+    getAllActivities();
+  }, []);
+
   return (
     <div>
       <div>
-     
-        <h3>Day :{detial.name}</h3>
+        <h2>Day :{detial.name}</h2>
         <h3>Part of Body To Work out :{detial.goal}</h3>
         <DeleteRoutine />
 
-        {activities.map((activ)=>{
+      <h1>These are some activities you can do with this routine</h1>
+        {detial.activities?.map((activity)=>{
           return(
             <div>
-              <h3>{activ.name}</h3>
+              <h3>Name:{activity.name}</h3>
+              <h5>Description:{activity.description}</h5>
+              <h5>Duration: {activity.duration}</h5>
+              <h5>reps: {activity.count}</h5>
             </div>
           )
         })}
-
 
 
         {/* drop down for my activities */}
@@ -56,7 +68,6 @@ function RoutineDetail() {
               count,
               duration
             );
-            console.log(result);
           }}
         >
           <select>
