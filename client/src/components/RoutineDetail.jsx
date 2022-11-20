@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
-import { useParams,useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 // my routine imports
 import { singleRoutine } from "../api/routines";
 import DeleteRoutine from "../components/DeleteRoutine";
-import { allRoutineActivities, createRoutineActivities } from "../api/routine_activities";
 //my activity imports
 import allActivities from "../api/activities";
+//my routine activity importes
+import {
+  createRoutineActivities,
+  deleteRoutineActivity,
+  updateRoutineActivity,
+} from "../api/routine_activities";
 
 function RoutineDetail() {
   const nav = useNavigate();
@@ -39,18 +44,61 @@ function RoutineDetail() {
         <h3>Part of Body To Work out :{detial.goal}</h3>
         <DeleteRoutine />
 
-      <h1>These are some activities you can do with this routine</h1>
-        {detial.activities?.map((activity)=>{
-          return(
+        <h1>These are some activities you can do with this routine</h1>
+
+        {detial.activities?.map((activity) => {
+          return (
             <div>
               <h3>Name:{activity.name}</h3>
               <h5>Description:{activity.description}</h5>
               <h5>Duration: {activity.duration}</h5>
               <h5>reps: {activity.count}</h5>
-            </div>
-          )
-        })}
 
+              <button
+                onClick={() => {
+                  deleteRoutineActivity(detial.id, activity.id);
+                  nav("/routines");
+                }}
+              >
+                Delete Activity from Routine
+              </button>
+
+              {/* <form
+                onSubmit={async (event) => {
+                  event.preventDefault();
+                  const result = await updateRoutineActivity(
+                    detial.id,
+                    activity.id,
+                    count,
+                    duration
+                  );
+                }}
+              >
+                <input
+                  variant="standard"
+                  placeholder="set amount of reps"
+                  type="text"
+                  value={count}
+                  onChange={(event) => {
+                    setCount(event.target.value);
+                  }}
+                />
+
+                <input
+                  variant="standard"
+                  placeholder="duration"
+                  type="text"
+                  value={duration}
+                  onChange={(event) => {
+                    setDuration(event.target.value);
+                  }}
+                />
+                <button>update the routine activity</button>
+              </form> */}
+              
+            </div>
+          );
+        })}
 
         {/* drop down for my activities */}
         {/* have to make it create a routine activity */}
@@ -68,6 +116,7 @@ function RoutineDetail() {
               count,
               duration
             );
+            console.log(result);
           }}
         >
           <select>

@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const { JWT_SECRET } = process.env;
 const express = require("express");
 const jwt = require("jsonwebtoken");
+
 const { getRoutineById } = require("../db/adapters/routines");
 const {
   addActivityToRoutine,
@@ -12,10 +13,7 @@ const {
 const { authRequired } = require("./utils");
 const routineActivitiesRouter = express.Router();
 
-
-
-
-routineActivitiesRouter.post("/", async (req, res, next) => {
+routineActivitiesRouter.post("/", authRequired, async (req, res, next) => {
   try {
     const rA = await addActivityToRoutine(req.body);
     if (rA) {
@@ -30,34 +28,30 @@ routineActivitiesRouter.post("/", async (req, res, next) => {
 });
 
 routineActivitiesRouter.patch(
-  "/:routineActivityId",
-  authRequired,
+  "/:routineId/:activityId",
   async (req, res, next) => {
-    const { routineActivityId } = req.params;
-    const { count, duration } = req.body;
+    const { routineId } = req.params;
+    const { activityId } = req.params;
+    const { count } = req.body;
+    const { duration } = req.body;
     const updateFields = {};
 
     if (count) {
       updateFields.count = count;
     }
+
     if (duration) {
       updateFields.duration = duration;
     }
+
     try {
-      const oRa = await getRoutineActivtyByid(routineActivityId);
-      const oR = await getRoutineById(oRa.routine_id);
-      if (oR.creator_id === req.user.id) {
-        const uRa = await updateRoutineActivity(
-          routineActivityId,
-          updateFields
-        );
-        res.send({ routine: uRa });
-      } else {
-        next({
-          name: "User error unauthorized",
-          message: "You cannot update routine_activity through this user",
-        });
-      }
+      const uRA = updateRoutineActivity(
+        routineId,
+        activityId,
+        updateFields.count,
+        updateFields.duration
+      );
+      res.send({ routAct: uRA });
     } catch ({ name, message }) {
       next({ name, message });
     }
@@ -65,33 +59,31 @@ routineActivitiesRouter.patch(
 );
 
 routineActivitiesRouter.delete(
-  "/:routineActivityId",
+  "/:routineId/:activityId",
   authRequired,
   async (req, res, next) => {
     try {
-      const dRa = await getRoutineActivtyByid(req.params.routineActivityId);
-      console.log(dRa);
-      const rO = await getRoutineById(dRa.routine_id);
-      if(dRa && rO.creator_id === req.user.id){
-        destroyRoutineActivity(req.params.routineActivityId)
-        res.send({Deleted: dRa})
-      }else{
-        next(routine 
-          ?{
-            name:"NOT AUTH", 
-            message:"cant edit post", 
-           }
-          :{
-            name:"NOT FOUND",
-            message:"CANT DELETE POST THAT DOESNT EXIT "
-           }
-          );
-      }
+      const dRA = destroyRoutineActivity(
+        req.params.routineId,
+        req.params.activityId
+      );
+      res.send({ rActivities: dRA });
 
-    }catch({name, message}){
-      next({name, message})
+      next(
+        rActivities
+          ? {
+              name: "NOT AUTH",
+              message: "CANT DELETE A ROUTINE THAT IS NOT YOURS",
+            }
+          : {
+              name: "NO ROUTINE FOUND",
+              message: "ROUTINE ACTIVITY DOES NOT EXIST",
+            }
+      );
+    } catch ({ name, message }) {
+      next({ name, message });
     }
-
-  });
+  }
+);
 
 module.exports = routineActivitiesRouter;
