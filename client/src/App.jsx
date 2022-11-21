@@ -40,6 +40,7 @@ function App() {
         <Route path="/routines/create" element={<CreateRoutine />} />
         <Route path="/changeroutine/:routineId" element={<UpdateRoutines />} />
         <Route path="/routines/:routineId" element={<RoutineDetail />} />
+      
         {/* auth routes */}
         <Route path="/users/register" element={<Register />} />
         <Route path="/users/login" element={<TheLogin />} />

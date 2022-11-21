@@ -10,7 +10,7 @@ const getActivityById = async (activityId) => {
    WHERE activities.id=${activityId}
   `
   );
-  
+ 
   return gabi;
  }catch(error){
   next(error);
@@ -55,7 +55,7 @@ const updateActivity = async (activity_id, fields) => {
   }
   try {
     const {
-      rows: [activity],
+      rows
     } = await client.query(
       `
       UPDATE activities
@@ -65,7 +65,7 @@ const updateActivity = async (activity_id, fields) => {
     `,
       Object.values(fields)
     );
-    return activity;
+    return rows;
   } catch (error) {
     console.error(error);
   }

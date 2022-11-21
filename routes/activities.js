@@ -47,7 +47,7 @@ actRouter.post("/", authRequired, async (req, res, next) => {
       next({ message: "CANT MAKE ACTIVITY" });
     }
   } catch ({ message }) {
-    next(message);
+    next({message:"SIGN IN TO UPDATE OR CREATE AND ACTIVITY"});
   }
 });
 
@@ -65,7 +65,7 @@ actRouter.patch("/:activityId", authRequired, async (req, res, next) => {
 
   try {
     const oA = await Activity.getActivityById(activityId);
-    if (oA.id) {
+    if (oA.creator_id === req.user.id) {
       const uA = await Activity.updateActivity(activityId, updateFields);
       res.send({ activity: uA });
     } else {
@@ -74,8 +74,8 @@ actRouter.patch("/:activityId", authRequired, async (req, res, next) => {
         message: "cannt update activity that is not yours",
       });
     }
-  } catch (error) {
-    throw error;
+  } catch ({message}) {
+    next({message:"cannt update activity that is not yours"})
   }
 });
 

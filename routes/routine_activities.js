@@ -20,10 +20,10 @@ routineActivitiesRouter.post("/", authRequired, async (req, res, next) => {
       res.send(rA);
     } else {
       res.status(400);
-      next({ message: "Routine activity causing error" });
+      next({ message: "Error creating routine activity please login or register to and enter all required fields" });
     }
   } catch ({ message }) {
-    next({ message });
+    next({ message: "Error creating routine activity please login or register to and enter all required fields" });
   }
 });
 
@@ -51,9 +51,9 @@ routineActivitiesRouter.patch(
         updateFields.count,
         updateFields.duration
       );
-      res.send({ routAct: uRA });
+      res.send({ routAct: uRA, message:"hello" });
     } catch ({ name, message }) {
-      next({ name, message });
+      next({ name, message:"hello" });
     }
   }
 );
@@ -72,7 +72,7 @@ routineActivitiesRouter.delete(
       next(
         rActivities
           ? {
-              name: "NOT AUTH",
+              name: "no auth",
               message: "CANT DELETE A ROUTINE THAT IS NOT YOURS",
             }
           : {

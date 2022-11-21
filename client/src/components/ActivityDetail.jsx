@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 function ActivityDetail() {
   const { activityId } = useParams();
   const [detail, setDetail] = useState({});
+  
+ 
   const nav = useNavigate();
 
   useEffect(() => {

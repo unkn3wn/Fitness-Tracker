@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
 import { loginUser } from "../api/users";
+import { useNavigate } from "react-router-dom";
 
 function TheLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState();
   const nav = useNavigate();
   return (
     <div>
@@ -14,15 +15,12 @@ function TheLogin() {
           event.preventDefault();
           const result = await loginUser(username, password);
           console.log(result);
-          nav("/activities");
-
           if (result) {
-            setPassword("");
-            setUsername("");
-            console.log("you are now logged in");
+            setError(result.message);
           } else {
-            console.log("Failed to login");
+            console.log("hello");
           }
+          nav("/activities");
         }}
       >
         <input
@@ -36,7 +34,7 @@ function TheLogin() {
           onChange={(event) => setPassword(event.target.value)}
           placeholder="Enter Your Password"
         />
-
+        {error && <h4>{error}</h4>}
         <button
           onClick={() => {
             console.log({ username });
@@ -45,7 +43,6 @@ function TheLogin() {
           Submit
         </button>
       </form>
-      <h6>login with a registered account</h6>
     </div>
   );
 }

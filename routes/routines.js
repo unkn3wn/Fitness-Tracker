@@ -75,7 +75,7 @@ routinesRouter.patch("/:routineId", authRequired, async (req, res, next) => {
       next({
         name: "UNAUTH",
         message:
-          "YOU CAN UPDATE THIS ONE BECAUSE ITS NOT YOUR OR PLEASE CREATE OR REGISTER AN ACCOUNT",
+          "cant update because this is not yours",
       });
     }
   } catch ({ name, message }) {

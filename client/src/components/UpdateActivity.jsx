@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { updateActivites } from "../api/activities";
-import { useNavigate, useParams } from "react-router-dom";
+import {useParams} from "react-router-dom"
 
 function UpdateActivity() {
-  const [name, setName] = useState([]);
-  const [description, setDescription] = useState([]);
-  const { activityId } = useParams();
-  const nav = useNavigate();
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [error, setError] = useState();
+  const {activityId} = useParams();
+
 
   return (
     <div>
@@ -14,9 +15,15 @@ function UpdateActivity() {
       <form
         onSubmit={async (event) => {
           event.preventDefault();
-          const result = await updateActivites(activityId, name, description);
+          const result = await updateActivites(activityId,name, description);
           console.log(result);
-          nav(`/activities/${activityId}`);
+
+          if(result.message){
+            setError(result.message)
+          }else{
+            console.log("yessir")
+          }
+
         }}
       >
         <input
@@ -28,7 +35,6 @@ function UpdateActivity() {
             setName(event.target.value);
           }}
         />
-
         <input
           variant="standard"
           value={description}
@@ -38,8 +44,10 @@ function UpdateActivity() {
             setDescription(event.target.value);
           }}
         />
-
-        <button type="submit">SUBMIT CHANGES</button>
+        {error && <h6>{error}</h6>}
+        <button 
+        type="submit"
+        >SUBMIT CHANGES</button>
       </form>
     </div>
   );

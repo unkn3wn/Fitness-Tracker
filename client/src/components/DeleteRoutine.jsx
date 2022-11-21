@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 function DeleteRoutine() {
   const nav = useNavigate();
   const {routineId} = useParams();
+  
   return (
     <button
       onClick={() => {

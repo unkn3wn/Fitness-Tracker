@@ -19,6 +19,7 @@ function RoutineDetail() {
   const [activities, setActivities] = useState([]);
   const [count, setCount] = useState("");
   const [duration, setDuration] = useState("");
+  const [error, setErorr] = useState();
 
   useEffect(() => {
     async function loadRoutines() {
@@ -40,11 +41,12 @@ function RoutineDetail() {
   return (
     <div>
       <div>
+        <h1>The Routine</h1>
         <h2>Day :{detial.name}</h2>
         <h3>Part of Body To Work out :{detial.goal}</h3>
         <DeleteRoutine />
 
-        <h1>These are some activities you can do with this routine</h1>
+        <h1>Some activities to do with this routine</h1>
 
         {detial.activities?.map((activity) => {
           return (
@@ -62,40 +64,6 @@ function RoutineDetail() {
               >
                 Delete Activity from Routine
               </button>
-
-              {/* <form
-                onSubmit={async (event) => {
-                  event.preventDefault();
-                  const result = await updateRoutineActivity(
-                    detial.id,
-                    activity.id,
-                    count,
-                    duration
-                  );
-                }}
-              >
-                <input
-                  variant="standard"
-                  placeholder="set amount of reps"
-                  type="text"
-                  value={count}
-                  onChange={(event) => {
-                    setCount(event.target.value);
-                  }}
-                />
-
-                <input
-                  variant="standard"
-                  placeholder="duration"
-                  type="text"
-                  value={duration}
-                  onChange={(event) => {
-                    setDuration(event.target.value);
-                  }}
-                />
-                <button>update the routine activity</button>
-              </form> */}
-              
             </div>
           );
         })}
@@ -110,6 +78,7 @@ function RoutineDetail() {
             // whihc allows us to get the first element
             const activityId = event.target[0].value;
             console.log(activityId);
+            nav(`/routines`)
             const result = await createRoutineActivities(
               routineId,
               activityId,
@@ -117,6 +86,11 @@ function RoutineDetail() {
               duration
             );
             console.log(result);
+            if(result.message){
+              setErorr(result.message)
+            }else{
+              console.log("works")
+            }
           }}
         >
           <select>
@@ -149,7 +123,7 @@ function RoutineDetail() {
               setDuration(event.target.value);
             }}
           />
-
+          {error && <h5>{error}</h5>}
           <button type="submit">Submit</button>
         </form>
       </div>
