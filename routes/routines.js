@@ -15,15 +15,15 @@ routinesRouter.get("/", async (req, res, next) => {
   }
 });
 
-routinesRouter.get("/:routineId", async(req,res,next)=>{
-  const {routineId} = req.params;
-  try{
+routinesRouter.get("/:routineId", async (req, res, next) => {
+  const { routineId } = req.params;
+  try {
     const oneRoutine = await Routine.getRoutineById(routineId);
     res.send(oneRoutine);
-  }catch(error){
-    next(error)
+  } catch (error) {
+    next(error);
   }
-})
+});
 
 routinesRouter.post("/", authRequired, async (req, res, next) => {
   try {
@@ -75,7 +75,7 @@ routinesRouter.patch("/:routineId", authRequired, async (req, res, next) => {
       next({
         name: "UNAUTH",
         message:
-          "YOU CAN UPDATE THIS ONE BECAUSE ITS NOT YOUR OR PLEASE CREATE OR REGISTER AN ACCOUNT",
+          "cant update because this is not yours",
       });
     }
   } catch ({ name, message }) {
@@ -83,31 +83,28 @@ routinesRouter.patch("/:routineId", authRequired, async (req, res, next) => {
   }
 });
 
-
-
 routinesRouter.delete("/:routineId", authRequired, async (req, res, next) => {
-  console.log("made to delete");
   try {
-    const { routineId } = req.params;
-    console.log(routineId);
+    const routine = await Routine.getRoutineById(req.params.routineId);
 
-    const routi = await Routine.getRoutineById(req.params.routineId);
-    console.log(routi);
-    if (routi && routi.creator_id === req.user.id) {
-      const uR = await Routine.destroyRoutine(routi.id);
-      res.send({ routine: uR });
-    } else {
+    if(routine && routine.creator_id === req.user.id){
+
+      const uR = await Routine.destroyRoutine(routine.id,{
+        is_public:false,
+      });
+      res.send(uR);
+    }else{
       next(
         routine
-          ? {
-              name: "UNAUTH",
-              message: "NOT ABLE TO DELETE",
-            }
-          : {
-              name: "ROUT NOT FOUND",
-              message: "NOT ABLE TO FIND",
-            }
-      );
+        ?{
+          name: "YOU ARE NOT AUTH",
+          message:"CANT DELTE WHATS NOT YOURS",
+         }
+        :{
+          name:"ROUTE NOT FOUND",
+          message:"DOES NOT EXIST"
+        }
+      )
     }
   } catch ({ name, message }) {
     next({ name, message });

@@ -38,38 +38,30 @@ const addActivityToRoutine = async ({
   }
 };
 //now we want to update our routines
-const updateRoutineActivity = async (ura, fields) => {
-  const setString = Object.keys(fields)
-    .map((key, index) => `"${key}"= $${index + 1}`)
-    .join(",");
-
-  if (setString.length === 0) {
-    return;
-  }
+async function updateRoutineActivity(routine_id, activity_id, count, duration) {
   try {
     const {
-      rows: [routine],
+      rows: [updatedRoutAct],
     } = await client.query(
       `
-    UPDATE routine_activities
-    SET ${setString}
-    WHERE routine_activities.id = ${ura}
-    RETURNING *;
-  `,
-      Object.values(fields)
+      UPDATE routine_activities
+      WHERE routine_activities.routine_id = ${routine_id} AND routine_activities.activity_id = ${activity_id}
+      RETURNING count, duration  
+          `,
+      [routine_id, activity_id, count, duration]
     );
-    return routine;
+    return updatedRoutAct;
   } catch (error) {
     throw error;
   }
-};
+}
 //destroying routine activities remove routine_activty from DB
-const destroyRoutineActivity = async (id) => {
+const destroyRoutineActivity = async (routine_id, activity_id) => {
   try {
     const { rows } = await client.query(
       `
     DELETE FROM routine_activities
-      WHERE routine_activities.id = '${id}'
+    WHERE routine_activities.routine_id = ${routine_id} AND routine_activities.activity_id = ${activity_id}
       RETURNING *;
    `
     );

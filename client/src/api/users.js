@@ -1,21 +1,16 @@
 export async function registerUser(username, password) {
-  try {
-    const response = await fetch("/routes/users/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    });
-    console.log("we are in after the fetch");
-    const result = await response.json();
-    return result;
-  } catch (error) {
-    console.error(error);
-  }
+  const response = await fetch("/routes/users/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username,
+      password,
+    }),
+  });
+  const result = await response.json();
+  return result;
 }
 
 export async function loginUser(username, password) {

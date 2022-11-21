@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
   const nav = useNavigate();
 
   return (
@@ -13,16 +14,15 @@ export default function Register() {
       <form
         onSubmit={async (event) => {
           event.preventDefault();
-
+         
           const result = await registerUser(username, password);
           console.log("register", result);
           if (result) {
             setUsername("");
             setPassword("");
-
-            console.log("you are ", result);
-          } else {
             console.log("Error in registering the user");
+          } else {
+            console.log("worked")
           }
         }}
       >
@@ -40,13 +40,7 @@ export default function Register() {
           placeholder="enter your password"
         />
 
-        <button
-          onClick={() => {
-           
-            nav("/routes/users/login");
-          
-          }}
-        >Submit</button>
+        <button>Submit</button>
       </form>
     </div>
   );

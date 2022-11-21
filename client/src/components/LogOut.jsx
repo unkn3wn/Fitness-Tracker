@@ -8,9 +8,8 @@ export default function TheLogout({username, password}) {
     <button
       onClick={() => {
         logoutUser();
-        nav("/");
-        console.log({username})
-        console.log(password)
+        nav("/users/login");
+        
       }}
     >
       Log Out

@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { loginUser } from "../api/users";
+import { useNavigate } from "react-router-dom";
 
 function TheLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState();
+  const nav = useNavigate();
   return (
     <div>
       <h1>LOGIN IN</h1>
@@ -12,14 +15,12 @@ function TheLogin() {
           event.preventDefault();
           const result = await loginUser(username, password);
           console.log(result);
-
           if (result) {
-            setPassword("");
-            setUsername("");
-            console.log("you are now logged in");
+            setError(result.message);
           } else {
-            console.log("Failed to login");
+            console.log("hello");
           }
+          nav("/activities");
         }}
       >
         <input
@@ -33,10 +34,14 @@ function TheLogin() {
           onChange={(event) => setPassword(event.target.value)}
           placeholder="Enter Your Password"
         />
-
-        <button onClick={()=>{
-          console.log({username})
-        }}>Submit</button>
+        {error && <h4>{error}</h4>}
+        <button
+          onClick={() => {
+            console.log({ username });
+          }}
+        >
+          Submit
+        </button>
       </form>
     </div>
   );

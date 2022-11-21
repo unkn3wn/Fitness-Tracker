@@ -1,15 +1,15 @@
 export default  async function allRoutines(){
     const response = await fetch(
         "/routes/routines"
-    )
-    console.log("hello")
+    );
+
     const result = await response.json();
     return result;
 }
 
 export async function createRoutine(is_public, name, goal){
     const response = await fetch(
-        "/routes/routines/",
+        "/routes/routines",
         {
             method:"POST",
             headers:{
@@ -28,7 +28,7 @@ export async function createRoutine(is_public, name, goal){
 
 export async function singleRoutine(routineId){
   const response = await fetch(
-    ``
+    `/routes/routines/${routineId}`
   )
 
   const result = await response.json();
@@ -36,9 +36,9 @@ export async function singleRoutine(routineId){
 
 }
 
-export async function updateRoutine(id, is_public, name, goal){
+export async function updateRoutine(routineId, is_public, name, goal){
    const response = await fetch(
-    `routes/routines/${id}`,
+    `/routes/routines/${routineId}`,
     {
         method:"PATCH",
         headers:{
@@ -54,9 +54,9 @@ export async function updateRoutine(id, is_public, name, goal){
     return result;
 }
 
-export async function deleteRoutine(id){
+export async function deleteRoutine(routineId){
     const response = await fetch(
-        `routes/routines/${id}`,
+        `/routes/routines/${routineId}`,
         {
             method:"DELETE",
             headers:{

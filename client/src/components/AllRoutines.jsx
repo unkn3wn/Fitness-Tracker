@@ -1,13 +1,12 @@
 import react from "react";
 import {useState, useEffect} from "react"
 import allRoutines from "../api/routines"
-import RoutineNavBar from "../navs/CreateRoutineNav"
+import RoutineNavBar from "../navs/RoutineNavs"
 import {useNavigate} from "react-router-dom"
 
-
-function AppsRoutines(){
-    const navigate = useNavigate();
-    const [routines, setRoutines] = useState([]);
+function AppsRoutines() {
+  const nav = useNavigate();
+  const [routines, setRoutines] = useState([]);
 
     useEffect(() => {
         async function getAllRoutines() {
@@ -21,21 +20,28 @@ function AppsRoutines(){
         
         <div>
           <RoutineNavBar/>
-            {routines.map((routines)=>{
+            {routines.map((routi)=>{
                 return(
-                    <div key={routines.id}>
-                        <h3>{routines.name}</h3>
-                        <h3>{routines.goal}</h3>
+                    <div key={routi.id}>
+                        <h3>{routi.name}</h3>
+                        <h3>{routi.goal}</h3>
                         <button 
                         onClick={()=>{
-                          navigate(`/routes/routines/${routines.id}`)
+                          nav(`/routines/${routi.id}`)
                         }}
                         >See details</button>
-                    </div>
-                )
-            })}
-        </div>
-      )
 
+            <button
+              onClick={() => {
+                nav(`/changeroutine/${routi.id}`);
+              }}
+            >
+              Update Routine
+            </button>
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 export default AppsRoutines;

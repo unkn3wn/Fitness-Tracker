@@ -1,49 +1,65 @@
-import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { createRoutine } from "../api/routines";
 
-function CreateRoutine(){
-    const [is_public, setIs_public] = useState("");
-    const [name, setName] = useState("");
-    const [goal, setGoal] = useState("");
+function CreateRoutine() {
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [goal, setGoal] = useState("");
+  const [is_public, setIs_Public] = useState("");
 
-    const navigate = useNavigate();
-  
-    return(
-        <form>
-                <input 
-                    value={name}
-                    onChange={(event)=>{
-                        setName(event.target.value);
-                    }}
-                    type="text"
-                    placeholder="Date Of Routine"
-                />
+  ///handleChange() = this allows to handle input change
+  return (
+    <div>
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const result = await createRoutine(is_public, name, goal);
+          setName("");
+          setGoal("");
+          setIs_Public("");
+          console.log(result);
+          navigate("/routines");
+        }}
+      >
+        <label>NAME:</label>
+        <input
+          variant="standard"
+          value={name}
+          type="text"
+          placeholder="name"
+          onChange={(event) => {
+            setName(event.target.value);
+          }}
+        />
 
-                <input 
-                    value={goal}
-                    onChange={(event)=>{
-                        setGoal(event.target.value);
-                    }}
-                    type="text"
-                    placeholder="Goal for the Routine Day"
-                />
+        <label>GOAL:</label>
+        <input
+          variant="standard"
+          value={goal}
+          type="text"
+          placeholder="goal"
+          onChange={(event) => {
+            setGoal(event.target.value);
+          }}
+        />
 
-            <label>
-                <input 
-                    value={is_public}
-                    onChange={(event)=>{
-                        setIs_public(event.taget.value);
-                    }}
-                    type="checkbox"
-                />
-            </label>
-                <button
-                onClick={()=>{
-                    navigate('/')
-                }}> Submit Routine</button>
+        <label>
+          <input
+            variant="standard"
+            value={is_public}
+            type="text"
+            placeholder="true or false"
+            onChange={(event) => {
+              setIs_Public(event.target.value);
+            }}
+          />
+        </label>
 
-        </form>
-    )
+        <button type="submit">Submit Routine</button>
+      </form>
+    </div>
+  );
 }
 
 export default CreateRoutine;
