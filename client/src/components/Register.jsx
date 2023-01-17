@@ -14,7 +14,7 @@ export default function Register() {
       <form
         onSubmit={async (event) => {
           event.preventDefault();
-         
+
           const result = await registerUser(username, password);
           console.log("register", result);
           if (result) {
@@ -22,7 +22,7 @@ export default function Register() {
             setPassword("");
             console.log("Error in registering the user");
           } else {
-            console.log("worked")
+            console.log("worked");
           }
         }}
       >
@@ -40,7 +40,13 @@ export default function Register() {
           placeholder="enter your password"
         />
 
-        <button>Submit</button>
+        <button
+          onClick={() => {
+            nav("/users/login");
+          }}
+        >
+          Submit
+        </button>
       </form>
     </div>
   );
