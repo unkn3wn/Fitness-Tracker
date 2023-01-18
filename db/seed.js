@@ -22,15 +22,15 @@ const {
   getPublicRoutinesByActivity,
   createRoutine,
   updateRoutine,
-  destroyRoutine,
 } = require("../db/adapters/routines");
 
-const {  
+const {
   getRoutineActivtyByid,
   addActivityToRoutine,
   updateRoutineActivity,
-  destroyRoutineActivity,
-  getRoutineActivitiesByRoutine, } = require("../db/adapters/routine_activities");
+
+  getRoutineActivitiesByRoutine,
+} = require("../db/adapters/routine_activities");
 
 const {
   createUser,
@@ -97,80 +97,79 @@ const createTables = async () => {
 
     console.log("tables created!");
   } catch (error) {
-    throw error ;
+    throw error;
   }
 };
 
 //seeding
-const seedUsers = async()=>{
+const seedUsers = async () => {
   //creating users
-     console.log("creating users")
-    for(const createdUser of testUsers){
-      await createUser(createdUser);
-    }
-    console.log("done creating users")
-  //getting user by id
-    console.log("getting users by id")
-    const h2 = await getUserById(2);
-    console.log("result:", h2);
-  //getting username
-  console.log("...getting a userby username")
-    const h3 = await getUserByUsername("Ferni");
-    console.log("result:", h3);
-    console.log("done getting user by username")
-  
+  console.log("creating users");
+  for (const createdUser of testUsers) {
+    await createUser(createdUser);
   }
+  console.log("done creating users");
+  //getting user by id
+  console.log("getting users by id");
+  const h2 = await getUserById(2);
+  console.log("result:", h2);
+  //getting username
+  console.log("...getting a userby username");
+  const h3 = await getUserByUsername("Ferni");
+  console.log("result:", h3);
+  console.log("done getting user by username");
+};
 
 const seedRoutines = async () => {
-//GETTING ROUTINE BY ID
+  //GETTING ROUTINE BY ID
   console.log("getting routine by id");
-      const routineById = await getRoutineById(2);
-      console.log("result:", routineById);
-  console.log("finished getting routinebyId")
+  const routineById = await getRoutineById(2);
+  console.log("result:", routineById);
+  console.log("finished getting routinebyId");
 
-//ROUTINE WITHOUT ACTIVITiES
+  //ROUTINE WITHOUT ACTIVITiES
   console.log("ROUTINES WITHOUT ACTIVITiES......");
-      for (const r_without_activties of testRoutines) {
-        await getRoutinesWithoutActivities(r_without_activties);
-      }
+  for (const r_without_activties of testRoutines) {
+    await getRoutinesWithoutActivities(r_without_activties);
+  }
   console.log("finished routine without activities");
 
-//ALL ROUTINES 
-  console.log("getting all routines")
-      for (const allRoutines of testRoutines) {
-      await getAllRoutines(allRoutines);
-      }
+  //ALL ROUTINES
+  console.log("getting all routines");
+  for (const allRoutines of testRoutines) {
+    await getAllRoutines(allRoutines);
+  }
   console.log("finished getting all routines");
 
-//PUNLIC ROUTINES
-  console.log("getting public routines")
-      for (const public_routines of testRoutines) {
-        await getAllPublicRoutines(public_routines);
-      }
+  //PUNLIC ROUTINES
+  console.log("getting public routines");
+  for (const public_routines of testRoutines) {
+    await getAllPublicRoutines(public_routines);
+  }
   console.log("finished getting public routines");
 
-//GETTING ROUTINE BY ID
+  //GETTING ROUTINE BY ID
   console.log("getting routine by id");
-      const hello = await getAllRoutinesByUser("David");
+  const hello = await getAllRoutinesByUser("David");
   console.log("result:", hello);
 
-//PUBLIC ROUTINES BY USER
+  //PUBLIC ROUTINES BY USER
   console.log("getting all public routines by user");
-      const hl = await getPublicRoutinesByUser("David");
+  const hl = await getPublicRoutinesByUser("David");
   console.log("result:", hl);
 
-//PUBLIC ROUTINES BY ACTI
+  //PUBLIC ROUTINES BY ACTI
   console.log("getting all public routines by activity");
-      const h2 = await getPublicRoutinesByActivity(1);
+  const h2 = await getPublicRoutinesByActivity(1);
   console.log("result:", h2);
 
-//creating routine user
+  //creating routine user
   console.log("seeding creating routine");
-      for(const rou of testRoutines){
-        await createRoutine(rou);
-      }
+  for (const rou of testRoutines) {
+    await createRoutine(rou);
+  }
   console.log("finished screating a routine");
-  //UPDATING ROUTINE 
+  //UPDATING ROUTINE
   console.log("updating a routine");
   const h3 = await updateRoutine(1, {
     is_public: false,
@@ -181,68 +180,59 @@ const seedRoutines = async () => {
 };
 
 const seedActivities = async () => {
-//seeding activities
+  //seeding activities
   console.log("getting activities by Id");
-      const h1 =  getActivityById(1);
-      console.log("result:", h1);
-//creating activities
+  const h1 = getActivityById(1);
+  console.log("result:", h1);
+  //creating activities
   console.log("making activities");
-       for (const activity of testActivities) {
-          await createActivities(activity);
-        }
+  for (const activity of testActivities) {
+    await createActivities(activity);
+  }
   console.log("activities made");
 
-//getting all the activities
+  //getting all the activities
   console.log(" getting all activities");
-      for (const allActivities of testActivities) {
-        await getAllActivities(allActivities);
-      }
+  for (const allActivities of testActivities) {
+    await getAllActivities(allActivities);
+  }
   console.log("finised getting all activities ");
 
-//updating a activity
+  //updating a activity
   console.log("updating an activity");
-         const activity = await updateActivity(1, {
-                name: "arms",
-                description: "dumbell curls, triceps, and forearms",
-          });
+  const activity = await updateActivity(1, {
+    name: "arms",
+    description: "dumbell curls, triceps, and forearms",
+  });
   console.log("Result:", activity);
-  
 };
 
-const seedRoutineActivities = async () =>{
-
-//GETTING ROUTINE BY ID
+const seedRoutineActivities = async () => {
+  //GETTING ROUTINE BY ID
   console.log("getting routine by id");
-    const h1 = await getRoutineActivtyByid(1);
+  const h1 = await getRoutineActivtyByid(1);
   console.log("Result:", h1);
 
-//ADDING ACTIVITY ROUTINE
-  console.log("adding to activity routine")
-    for(const AATR of testRoutineActivities){
-      await addActivityToRoutine(AATR);
-    }
+  //ADDING ACTIVITY ROUTINE
+  console.log("adding to activity routine");
+  for (const AATR of testRoutineActivities) {
+    await addActivityToRoutine(AATR);
+  }
   console.log("finsihed adding to activity routine");
 
-//UPDATING ROUTINE ACTIVITY
-console.log("updating routine activities")
-    const h2 = await updateRoutineActivity(1,{
-      duration:10, count:30,
-    });
-console.log("Result:", h2);
+  //UPDATING ROUTINE ACTIVITY
+  console.log("updating routine activities");
+  const h2 = await updateRoutineActivity(1, {
+    duration: 10,
+    count: 30,
+  });
+  console.log("Result:", h2);
 
-//ROUTINE ACTIVITiES BY ROUTINE
-console.log("getting routine activities by routine");
-    const h3 = await getRoutineActivitiesByRoutine(1);
-console.log("result:", h3);
-
-
-
-
-
-
-
-}
-
+  //ROUTINE ACTIVITiES BY ROUTINE
+  console.log("getting routine activities by routine");
+  const h3 = await getRoutineActivitiesByRoutine(1);
+  console.log("result:", h3);
+};
 
 async function rebuildDB() {
   try {
@@ -250,11 +240,9 @@ async function rebuildDB() {
     await dropTables();
     await createTables();
     await seedUsers();
-    await seedRoutines()
+    await seedRoutines();
     await seedActivities();
     await seedRoutineActivities();
-    
-    
   } catch (error) {
     console.log("Error during rebuildDB");
     throw error;

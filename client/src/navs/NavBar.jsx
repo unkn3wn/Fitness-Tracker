@@ -7,7 +7,7 @@ function NavBar() {
       <Link to="/">Home</Link>
       <Link to="/activities">Activties </Link>
       <Link to="/routines">Routines</Link>
-      {/* switch logout to the button so immport button function */}
+      {/* switch logout to the button so import button function */}
       <TheLogout/>
     </nav>
   );

@@ -5,12 +5,13 @@ import { useNavigate } from "react-router-dom";
 export default function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState();
 
   const nav = useNavigate();
 
   return (
     <div>
-      <h1>REGISTER</h1>
+      <h1>PLEASE REGISTER OR LOGIN</h1>
       <form
         onSubmit={async (event) => {
           event.preventDefault();
@@ -20,9 +21,10 @@ export default function Register() {
           if (result) {
             setUsername("");
             setPassword("");
-            console.log("Error in registering the user");
+            nav("/users/login");
           } else {
             console.log("worked");
+            setError(result.message);
           }
         }}
       >
@@ -40,14 +42,21 @@ export default function Register() {
           placeholder="enter your password"
         />
 
-        <button
-          onClick={() => {
-            nav("/users/login");
-          }}
-        >
-          Submit
-        </button>
+        <button>Submit</button>
       </form>
+      {error && <alert>{error}</alert>}
+      <div>
+        <h5>
+          Already have an account?{" "}
+          <a
+            onClick={() => {
+              nav("users/login");
+            }}
+          >
+            Sign In
+          </a>
+        </h5>
+      </div>
     </div>
   );
 }

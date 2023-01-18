@@ -16,11 +16,13 @@ function TheLogin() {
           const result = await loginUser(username, password);
           console.log(result);
           if (result) {
-            setError(result.message);
+            setUsername("");
+            setPassword("");
+            
           } else {
             console.log("hello");
+            setError(result.message);
           }
-          nav("/activities");
         }}
       >
         <input

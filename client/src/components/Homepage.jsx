@@ -1,11 +1,11 @@
 import react from "react";
 import HomeNavBar from "../navs/HomeNav";
+import Register from "../components/Register"
 
 function Home() {
   return (
     <div>
-      <HomeNavBar />
-      <h2>This is the home page!</h2>
+      <Register/>
     </div>
   );
 }

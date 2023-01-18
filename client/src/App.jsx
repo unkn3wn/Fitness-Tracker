@@ -21,7 +21,7 @@ import UpdateRoutines from "./components/UpdateRoutines";
 function App() {
   return (
     <div>
-      <NavBar />
+      <NavBar/>
       <Routes>
         {/* home routes */}
         <Route path="/" element={<Home />} />

@@ -12,9 +12,7 @@ authRouter.post("/register", async (req, res, next) => {
   try {
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
     const user = await Users.createUser({ username, password: hashedPassword });
-
     console.log(user);
-
     const token = jwt.sign(user, JWT_SECRET);
     delete user.password;
 
@@ -26,6 +24,32 @@ authRouter.post("/register", async (req, res, next) => {
     res.send({ user, message: "Failed to register" });
   } catch ({ message }) {
     next({ message: "Failed to register" });
+  }
+});
+
+authRouter.post("/login", async (req, res, next) => {
+  const { username, password } = req.body;
+  try {
+    
+    const user = await Users.getUserByUsername(username);
+    console.log(user);
+    const vP = await bcrypt.compare(password, user.password);
+    delete user.password;
+
+    if (vP) {
+      const token = jwt.sign(user, JWT_SECRET);
+      res.cookie("token", token, {
+        sameSite: "strict",
+        httpOnly: true,
+        signed: true,
+      });
+      delete user.password;
+      res.send({ user });
+    } else {
+      next({ message: "WRONG USERNAME OR PASSWORD TRY AGAIN" });
+    }
+  } catch (error) {
+    next(error);
   }
 });
 
@@ -45,32 +69,7 @@ authRouter.post("/logout", async (req, res, next) => {
   }
 });
 
-authRouter.post("/login", async (req, res, next) => {
-  try {
-    const { username, password } = req.body;
-    console.log({ username, password });
-    const user = await Users.getUserByUsername(username);
-    console.log(user);
-    const vP = await bcrypt.compare(password, user.password);
-    delete user.password;
 
-    if (vP) {
-      const token = jwt.sign(user, JWT_SECRET);
-
-      res.cookie("token", token, {
-        sameSite: "strict",
-        httpOnly: true,
-        signed: true,
-      });
-      delete user.password;
-      res.send({ user });
-    } else {
-      next({ message: "WRONG USERNAME OR PASSWORD TRY AGAIN" });
-    }
-  } catch (error) {
-    next(error);
-  }
-});
 
 authRouter.get("/me", authRequired, async (req, res, next) => {
   try {
